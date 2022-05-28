@@ -22,27 +22,24 @@ int ch3Value;
 int ch4Value;
 int ch5Value;
 bool abortSwitch = false;
+bool stabilizeMode = true;
 int throttle;
 int frontRight;
 int frontLeft;
 int backRight;
 int backLeft;
 
+int ROLLPITCHERRORMIN = -180;
+int ROLLPITCHERRORMAX = 180;
+
 
 // SERVO BOARD SETUP
 // called this way, it uses the default address 0x40
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
-// Depending on your servo make, the pulse width min and max may vary, you 
-// want these to be as small/large as possible without hitting the hard stop
-// for max range. You'll have to tweak them as necessary to match the servos you have!
-
-#define SERVOMIN  150 // This is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  600 // This is the 'maximum' pulse length count (out of 4096)
+#define SERVOMIN  210 // minimum pulse length count (out of 4096) the ESC will recognize
+#define SERVOMAX  400 // maximum pulse length count (out of 4096) the ESC will recognize
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
-
-// motor PWM frequency variable
-uint16_t pulselen;
 
 // MPU6050 SETUP
 // Because of the mounting orientation of the chip on the drone: 
@@ -140,7 +137,7 @@ void loop() {
         pwm.setPWM(7, 0, SERVOMIN);
     }
   
-  else {
+  else { // if stabilize mode == true 
 
     // GYRO DATA
     // Read normalized values
@@ -181,7 +178,7 @@ void loop() {
     ch3Value = mapReceiver(pulseIn(CH3, HIGH));
 
     // map receiver input value range of 0-1023 to a value range of 0-180 which the ESC understands 
-    throttle = map(ch3Value, 1000, 2000, 150, 600);
+    throttle = map(ch3Value, 1000, 2000, SERVOMIN, SERVOMAX);
 
     Serial.print( " throttle = ");
     Serial.print(throttle);
@@ -197,10 +194,10 @@ void loop() {
     // clockwise yaw (right spin) -> negative yaw values
     // counterclockwise yaw (left spin) -> positive yaw values
 
-    frontRight = throttle + frontPitchAdjust - rightRollAdjust + clockwiseYawAdjust;
-    frontLeft = throttle + frontPitchAdjust + leftRollAdjust - counterclockwiseYawAdjust;
-    backRight = throttle + backPitchAdjust - rightRollAdjust + clockwiseYawAdjust;
-    backLeft = throttle + backPitchAdjust + leftRollAdjust - counterclockwiseYawAdjust;  //BACK LEFT STOP AND STUTTERS BEFORE OTHER MOTORS TURN OFF
+    frontRight = throttle;           // + frontPitchAdjust - rightRollAdjust + clockwiseYawAdjust;
+    frontLeft = throttle;            // + frontPitchAdjust + leftRollAdjust - counterclockwiseYawAdjust;
+    backRight = throttle;            // + backPitchAdjust - rightRollAdjust + clockwiseYawAdjust;
+    backLeft = throttle;             // + backPitchAdjust + leftRollAdjust - counterclockwiseYawAdjust;  //BACK LEFT STOP AND STUTTERS BEFORE OTHER MOTORS TURN OFF
 
   
     pwm.setPWM(0, 0, frontRight);
