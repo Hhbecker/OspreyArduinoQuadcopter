@@ -1,5 +1,5 @@
 /*************************************************** 
-
+Flight Controller for the Osprey Arduino Quadcopter
 ****************************************************/
 
 #include <Wire.h>
@@ -79,27 +79,14 @@ void setup() {
     pinMode(CH5, INPUT);
 
     // SERVO BOARD SETUP
-    /*
-    * In theory the internal oscillator (clock) is 25MHz but it really isn't
-    * that precise. You can 'calibrate' this by tweaking this number until
-    * you get the PWM update frequency you're expecting!
-    * The int.osc. for the PCA9685 chip is a range between about 23-27MHz and
-    * is used for calculating things like writeMicroseconds()
-    * Analog servos run at ~50 Hz updates, It is importaint to use an
-    * oscilloscope in setting the int.osc frequency for the I2C PCA9685 chip.
-    * 1) Attach the oscilloscope to one of the PWM signal pins and ground on
-    *    the I2C PCA9685 chip you are setting the value for.
-    * 2) Adjust setOscillatorFrequency() until the PWM update frequency is the
-    *    expected value (50Hz for most ESCs)
-    * Setting the value here is specific to each individual I2C PCA9685 chip and
-    * affects the calculations for the PWM update frequency. 
-    * Failure to correctly set the int.osc value will cause unexpected PWM results
-    */
+    // The internal oscillator (clock) for the PCA9685 chip is in a range between about 23-27MHz
+    // Analog servos run at ~50 Hz updates, 
+ 
     pwm.begin();
     pwm.setOscillatorFrequency(27000000); // 27 MHz
     pwm.setPWMFreq(SERVO_FREQ);  // Analog servos run at ~50 Hz updates
     
-    delay(10);
+    delay(10); 
     
     // MPU6050 SETUP
     Serial.println("Initialize MPU6050");
@@ -118,6 +105,8 @@ void setup() {
     // If you don't want use threshold, comment this line or set 0.
     mpu.setThreshold(3);
 }
+
+/////////////////////////////////////////////////// CUSTOM FUNCTIONS /
 
 int mapReceiver(int input){
     // constrain receiver value to range 1000-2000
@@ -184,18 +173,8 @@ void loop() {
 
     // SET NEW MOTOR SPEED THROUGH SERVO BOARD
 
-    // PITCH
-    // forward pitch -> negatuve pitch values 
-    // backward pitch -> positive pitch values 
-    // YAW
-    // clockwise yaw (right spin) -> negative yaw values
-    // counterclockwise yaw (left spin) -> positive yaw values
-    // ROLL 
-    // right side roll -> positive roll degrees
-    // leftside roll -> negative roll values 
 
-    // THROTTLE 
-
+    // THROTTLE
     // read pulse from receiver channel 3 (throttle stick) and map it to range 1000-2000
     ch3Value = mapReceiver(pulseIn(CH3, HIGH));
 
@@ -204,14 +183,23 @@ void loop() {
 
     Serial.print( " throttle = ");
     Serial.print(throttle);
-  
 
-    frontRight = throttle;
-    frontLeft = throttle;
-    backRight = throttle;
-    
-    //BACK LEFT STOP AND STUTTERS BEFORE OTHER MOTORS TURN OFF
-    backLeft = throttle;
+
+    // PITCH
+    // forward pitch -> negative pitch values 
+    // backward pitch -> positive pitch values 
+    // ROLL 
+    // right side roll -> positive roll degrees
+    // leftside roll -> negative roll values 
+    // YAW
+    // clockwise yaw (right spin) -> negative yaw values
+    // counterclockwise yaw (left spin) -> positive yaw values
+
+    frontRight = throttle + frontPitchAdjust - rightRollAdjust + clockwiseYawAdjust;
+    frontLeft = throttle + frontPitchAdjust + leftRollAdjust - counterclockwiseYawAdjust;
+    backRight = throttle + backPitchAdjust - rightRollAdjust + clockwiseYawAdjust;
+    backLeft = throttle + backPitchAdjust + leftRollAdjust - counterclockwiseYawAdjust;  //BACK LEFT STOP AND STUTTERS BEFORE OTHER MOTORS TURN OFF
+
   
     pwm.setPWM(0, 0, frontRight);
     pwm.setPWM(3, 0, frontLeft);
