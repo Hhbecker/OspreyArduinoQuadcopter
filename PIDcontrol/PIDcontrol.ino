@@ -53,14 +53,16 @@ MPU6050 mpu;
 
 // Timers
 unsigned long millisecondsPassed = 0;
-float timeStep = 0.01;
+float timeStep = 0.05;
 
 // Pitch, Roll and Yaw values
 float gyroPitch = 0;
 float gyroRoll = 0;
 float gyroYaw = 0;
 float accelPitch;
+float pitchOffset;
 float accelRoll;
+float rollOffset;
 float pitch;
 float roll;
 
@@ -91,8 +93,6 @@ void setup() {
     pwm.setPWMFreq(50);  // Analog servos run at ~50 Hz updates
         
     // MPU6050 SETUP
-    Serial.println("Initialize MPU6050");
-
     while(!mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G))
     {
         Serial.println("Could not find a valid MPU6050 sensor, check wiring!");
@@ -104,6 +104,19 @@ void setup() {
     
     // Set threshold sensivty. Default 3.
     mpu.setThreshold(3);
+
+    // LOOP THIS TO GET A MORE ACCURATE OFFSET
+    normAccel = mpu.readNormalizeAccel();
+
+    rollOffset = -(atan2(normAccel.XAxis, sqrt(normAccel.YAxis*normAccel.YAxis + normAccel.ZAxis*normAccel.ZAxis))*180.0)/M_PI;
+    pitchOffset = (atan2(normAccel.YAxis, normAccel.ZAxis)*180.0)/M_PI;
+
+//    Serial.println(" Roll offset = ");
+//    Serial.println(rollOffset);
+//    Serial.println(" Pitch offset = ");
+//    Serial.println(pitchOffset);
+
+
 }
 
 /////////////////////////////////////////////////// CUSTOM FUNCTIONS /
@@ -137,8 +150,8 @@ void loop() {
     normGyro = mpu.readNormalizeGyro();
 
     // Calculate Pitch, Roll and Yaw
-    gyroRoll = roll + normGyro.YAxis * timeStep;    // switched gryoRoll for roll
-    gyroPitch = pitch + normGyro.XAxis * timeStep;  // switched gyroPitch for pitch
+    gyroRoll = gyroRoll + normGyro.YAxis * timeStep;    // switched gryoRoll for roll
+    gyroPitch = gyroPitch + normGyro.XAxis * timeStep;  // switched gyroPitch for pitch
     gyroYaw = gyroYaw + normGyro.ZAxis * timeStep;
 
     // ACCELEROMETER DATA
@@ -147,54 +160,69 @@ void loop() {
 
     // Calculate Pitch & Roll
     accelRoll = -(atan2(normAccel.XAxis, sqrt(normAccel.YAxis*normAccel.YAxis + normAccel.ZAxis*normAccel.ZAxis))*180.0)/M_PI;
+    accelRoll = accelRoll - rollOffset;
     accelPitch = (atan2(normAccel.YAxis, normAccel.ZAxis)*180.0)/M_PI;
+    accelPitch = accelPitch - pitchOffset;
+
+//    Serial.print(" gyroPitch = ");
+//    Serial.print(gyroPitch);
+//    Serial.print(" gyroRoll = ");
+//    Serial.print(gyroRoll);
+//    Serial.print(" accelRoll = ");
+//    Serial.print(accelRoll);
+//    Serial.print(" accelPitch = ");
+//    Serial.print(accelPitch);
+    
+
 
     // COMPLIMENTARY FILTER
 
-    pitch = (0.98*gyroPitch) + (0.02*accelPitch);
-    roll = (0.98*gyroRoll) + (0.02*accelRoll);
+    pitch = (0.99*gyroPitch) + (0.01*accelPitch);
+    roll = (0.99*gyroRoll) + (0.01*accelRoll);
 
     if(abs(pitch) > 180 || abs(roll) > 180){
         abortSwitch = true;
     }
 
-    // Output
-    Serial.print(" Pitch = ");
-    Serial.print(pitch);
-    Serial.print(" Roll = ");
-    Serial.print(roll);
-    Serial.print(" Yaw = ");
-    Serial.print(gyroYaw);
+//    // Output
+//    Serial.print(" Pitch = ");
+//    Serial.print(pitch);
+//    Serial.print(" Roll = ");
+//    Serial.print(roll);
+//    Serial.print(" Yaw = ");
+//    Serial.print(gyroYaw);
 
     ///////// state estimation complete ///////////
+
+    // THROTTLE
+    // read pulse from receiver channel 3 (throttle stick) and map it to range 1000-2000
+    ch3Value = mapReceiver(pulseIn(CH3, HIGH));
+    
+    // map receiver input value range of 0-1023 to a value range of 0-180 which the ESC understands 
+    throttle = map(ch3Value, 1000, 2000, SERVOMIN, SERVOMAX);
+    
     
     // ABORT SWITCH - turn all motors off
-    if(pulseIn(CH5, HIGH) > 1500){
-
-        abortSwitch == true;
-  
+    if(pulseIn(CH5, HIGH) > 1500 || throttle < 215){
+        abortSwitch = true;
+    }
+    else{
+        abortSwitch = false;
     }
     
-    if(abortSwitch){
+    if(abortSwitch == true){
         pwm.setPWM(0, 0, SERVOMIN);
         pwm.setPWM(3, 0, SERVOMIN);
         pwm.setPWM(4, 0, SERVOMIN);
         pwm.setPWM(7, 0, SERVOMIN);
-    }
-      
+    } 
+    
     else { // if (stabilize mode) {      
-    
-        // THROTTLE
-        // read pulse from receiver channel 3 (throttle stick) and map it to range 1000-2000
-        ch3Value = mapReceiver(pulseIn(CH3, HIGH));
-    
-        // map receiver input value range of 0-1023 to a value range of 0-180 which the ESC understands 
-        throttle = map(ch3Value, 1000, 2000, SERVOMIN, SERVOMAX);
-    
+        
         // calculate error term
         rollErrorIntegrated = rollErrorIntegrated + roll;
 
-        rollError = (1 * roll) + (0.25 * rollErrorIntegrated); // proportional term plus integral term
+        rollError = (0.5 * roll) + (0.05 * rollErrorIntegrated); // proportional term plus integral term
     
         // PITCH
         // forward pitch -> negative pitch values 
@@ -205,7 +233,9 @@ void loop() {
         // YAW
         // clockwise yaw (right spin) -> negative yaw values
         // counterclockwise yaw (left spin) -> positive yaw values
-    
+
+
+        // SATURATION POSSIBLE HERE
         frontRight = throttle + rollError;           // + frontPitchAdjust - rightRollAdjust + clockwiseYawAdjust;
         if(frontRight > SERVOMAX) { frontRight = SERVOMAX; }
         
@@ -218,15 +248,15 @@ void loop() {
         backLeft = throttle - rollError;             // + backPitchAdjust + leftRollAdjust - counterclockwiseYawAdjust;  //BACK LEFT STOPS BEFORE OTHER MOTORS TURN OFF
         if(backLeft > SERVOMAX) { backLeft = SERVOMAX; }
         
-
-        Serial.print( " throttle = ");
-        Serial.print(throttle);
-        Serial.print( " rollError = ");
-        Serial.print(rollError);
-        Serial.print( " frontRight = ");
-        Serial.print(frontRight);
-        Serial.print( " frontLeft = ");
-        Serial.print(frontLeft);
+//
+//        Serial.print( " throttle = ");
+//        Serial.print(throttle);
+//        Serial.print( " rollError = ");
+//        Serial.print(rollError);
+//        Serial.print( " frontRight = ");
+//        Serial.print(frontRight);
+//        Serial.print( " frontLeft = ");
+//        Serial.print(frontLeft);
 
     
         pwm.setPWM(0, 0, frontRight);
@@ -238,17 +268,16 @@ void loop() {
         // WAIT FULL TIME STEP BEFORE CONTINUING FOR SAKE OF GYRO READINGS
     
         // if this number is negative the timeStep is too short
-        Serial.print(" Time to delay in milliseconds = ");
-        Serial.print((timeStep*1000) - (millis() - millisecondsPassed));
+//        Serial.print(" Time to delay in milliseconds = ");
+//        Serial.print((timeStep*1000) - (millis() - millisecondsPassed));
         
     
         // Wait to full timeStep period
     
-        // delay((timeStep*1000) - (millis() - millisecondsPassed));
-
-        // Set new print line
-        Serial.println();
+        delay((timeStep*1000) - (millis() - millisecondsPassed));
+        
     }
 
+    //Serial.println();
   
 }
