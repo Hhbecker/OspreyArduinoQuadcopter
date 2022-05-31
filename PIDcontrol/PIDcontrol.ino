@@ -32,6 +32,10 @@ int backLeft;
 
 int rollError;
 int rollErrorIntegrated;
+int integralCount;
+int pitchError;
+int pitchErrorIntegrated;
+
 
 int ROLLPITCHERRORMIN = -180;
 int ROLLPITCHERRORMAX = 180;
@@ -111,6 +115,8 @@ void setup() {
     rollOffset = -(atan2(normAccel.XAxis, sqrt(normAccel.YAxis*normAccel.YAxis + normAccel.ZAxis*normAccel.ZAxis))*180.0)/M_PI;
     pitchOffset = (atan2(normAccel.YAxis, normAccel.ZAxis)*180.0)/M_PI;
 
+
+
 //    Serial.println(" Roll offset = ");
 //    Serial.println(rollOffset);
 //    Serial.println(" Pitch offset = ");
@@ -177,8 +183,8 @@ void loop() {
 
     // COMPLIMENTARY FILTER
 
-    pitch = (0.99*gyroPitch) + (0.01*accelPitch);
-    roll = (0.99*gyroRoll) + (0.01*accelRoll);
+    pitch = (0.98*gyroPitch) + (0.02*accelPitch);
+    roll = (0.98*gyroRoll) + (0.02*accelRoll);
 
     if(abs(pitch) > 180 || abs(roll) > 180){
         abortSwitch = true;
@@ -218,11 +224,33 @@ void loop() {
     } 
     
     else { // if (stabilize mode) {      
+
+        integralCount++;
+
+        if(integralCount == 10){
+            rollErrorIntegrated = 0;
+            integralCount = 0;
+        }
         
+        // ROLL
         // calculate error term
         rollErrorIntegrated = rollErrorIntegrated + roll;
 
-        rollError = (0.5 * roll) + (0.05 * rollErrorIntegrated); // proportional term plus integral term
+        rollError = (5 * roll);            // + (0.25 * rollErrorIntegrated) + (0.25 * normGyro.YAxis); // proportional term + integral term + derivative term
+        
+//        Serial.print( " throttle = ");
+//        Serial.print(throttle);
+//        Serial.print( " rollError = ");
+//        Serial.print(rollError);
+//        Serial.print( " rollErrorIntegrated = ");
+//        Serial.print(rollErrorIntegrated);
+//        Serial.print( " frontRight = ");
+//        Serial.print(frontRight);
+//        Serial.print( " frontLeft = ");
+//        Serial.print(frontLeft);
+//        Serial.print( " integral count = ");
+//        Serial.print(integralCount);
+
     
         // PITCH
         // forward pitch -> negative pitch values 
@@ -247,16 +275,6 @@ void loop() {
         
         backLeft = throttle - rollError;             // + backPitchAdjust + leftRollAdjust - counterclockwiseYawAdjust;  //BACK LEFT STOPS BEFORE OTHER MOTORS TURN OFF
         if(backLeft > SERVOMAX) { backLeft = SERVOMAX; }
-        
-//
-//        Serial.print( " throttle = ");
-//        Serial.print(throttle);
-//        Serial.print( " rollError = ");
-//        Serial.print(rollError);
-//        Serial.print( " frontRight = ");
-//        Serial.print(frontRight);
-//        Serial.print( " frontLeft = ");
-//        Serial.print(frontLeft);
 
     
         pwm.setPWM(0, 0, frontRight);
@@ -273,11 +291,14 @@ void loop() {
         
     
         // Wait to full timeStep period
-    
+
+        // millis() - millisecondsPassed = the time in milliseconds spent running the loop 
+        // delay the timestep - time already spent running this script
+        // delay command takes an input in milliseconds and delays for that amount of milliseconds
         delay((timeStep*1000) - (millis() - millisecondsPassed));
         
     }
 
-    //Serial.println();
+    // Serial.println();
   
 }
