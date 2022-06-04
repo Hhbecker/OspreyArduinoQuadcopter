@@ -17,6 +17,14 @@ Flight Controller for the Osprey Arduino Quadcopter
 #define CH5 9
 #define CH6 8
 
+
+//Floating point math is also much slower than integer math in performing calculations, 
+//so should be avoided if, for example, a loop has to run at top speed for a critical 
+//timing function. Programmers often go to some lengths to convert floating point 
+//calculations to integer math to increase speed.
+
+//C++ always truncates aka rounds down to the nearest integer equal to or less than the floating point value.
+
 int ch1Value;
 int ch2Value;
 int ch3Value;
@@ -30,15 +38,30 @@ int frontLeft;
 int backRight;
 int backLeft;
 
-int rollError;
-int rollErrorIntegrated;
-int integralCount;
-int pitchError;
-int pitchErrorIntegrated;
+// roll only
+int proportional;
+int integral;
+int derivative;
 
+float previousRoll;
+int rollCorrection;
+float rollErrorIntegrated;
+int pitchCorrection;
+float pitchErrorIntegrated;
+int yawCorrection;
+float yawErrorIntegrated;
 
-int ROLLPITCHERRORMIN = -180;
-int ROLLPITCHERRORMAX = 180;
+float rollPgain = 1;
+float rollIgain;
+float rollDgain;
+
+float pitchPgain;
+float pitchIgain;
+float pitchDgain;
+
+float yawPgain;
+float yawIgain;
+float yawDgain;
 
 
 // SERVO BOARD SETUP
@@ -46,7 +69,7 @@ int ROLLPITCHERRORMAX = 180;
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 #define SERVOMIN  210 // minimum pulse length count (out of 4096) the ESC will recognize
-#define SERVOMAX  400 // maximum pulse length count (out of 4096) the ESC will recognize
+#define SERVOMAX  340 // maximum pulse length count (out of 4096) the ESC will recognize // FLIGHT = 400 ROLL TEST = 350
 
 // MPU6050 SETUP
 // Because of the mounting orientation of the chip on the drone: 
@@ -57,11 +80,11 @@ MPU6050 mpu;
 
 // Timers
 unsigned long millisecondsPassed = 0;
-float timeStep = 0.05;
+float timeStep = 0.05f;
 
 // Pitch, Roll and Yaw values
-float gyroPitch = 0;
-float gyroRoll = 0;
+float gyroPitch = 0.0;
+float gyroRoll = 0.0;
 float gyroYaw = 0;
 float accelPitch;
 float pitchOffset;
@@ -115,13 +138,12 @@ void setup() {
     rollOffset = -(atan2(normAccel.XAxis, sqrt(normAccel.YAxis*normAccel.YAxis + normAccel.ZAxis*normAccel.ZAxis))*180.0)/M_PI;
     pitchOffset = (atan2(normAccel.YAxis, normAccel.ZAxis)*180.0)/M_PI;
 
-
-
 //    Serial.println(" Roll offset = ");
 //    Serial.println(rollOffset);
 //    Serial.println(" Pitch offset = ");
 //    Serial.println(pitchOffset);
 
+    int previousRoll = 0.0;
 
 }
 
@@ -178,7 +200,6 @@ void loop() {
 //    Serial.print(accelRoll);
 //    Serial.print(" accelPitch = ");
 //    Serial.print(accelPitch);
-    
 
 
     // COMPLIMENTARY FILTER
@@ -186,17 +207,18 @@ void loop() {
     pitch = (0.98*gyroPitch) + (0.02*accelPitch);
     roll = (0.98*gyroRoll) + (0.02*accelRoll);
 
-    if(abs(pitch) > 180 || abs(roll) > 180){
+    if(abs(pitch) > 90 || abs(roll) > 90){
         abortSwitch = true;
     }
 
 //    // Output
-//    Serial.print(" Pitch = ");
-//    Serial.print(pitch);
-//    Serial.print(" Roll = ");
-//    Serial.print(roll);
-//    Serial.print(" Yaw = ");
-//    Serial.print(gyroYaw);
+    Serial.print(" Pitch = ");
+    Serial.print(pitch);
+    Serial.print(" Roll = ");
+    Serial.print(roll);
+    Serial.print(" Yaw = ");
+    Serial.print(gyroYaw);
+    Serial.println();
 
     ///////// state estimation complete ///////////
 
@@ -206,14 +228,13 @@ void loop() {
     
     // map receiver input value range of 0-1023 to a value range of 0-180 which the ESC understands 
     throttle = map(ch3Value, 1000, 2000, SERVOMIN, SERVOMAX);
-    
+
+//    Serial.print( " abort value = ");
+//    Serial.print(pulseIn(CH5, HIGH));
     
     // ABORT SWITCH - turn all motors off
-    if(pulseIn(CH5, HIGH) > 1500 || throttle < 215){
+    if(pulseIn(CH5, HIGH) > 1500){
         abortSwitch = true;
-    }
-    else{
-        abortSwitch = false;
     }
     
     if(abortSwitch == true){
@@ -222,72 +243,80 @@ void loop() {
         pwm.setPWM(4, 0, SERVOMIN);
         pwm.setPWM(7, 0, SERVOMIN);
     } 
-    
+
+    // PID COMMANDS ////////////////////////////////////////////////
     else { // if (stabilize mode) {      
-
-        integralCount++;
-
-        if(integralCount == 10){
-            rollErrorIntegrated = 0;
-            integralCount = 0;
-        }
         
         // ROLL
-        // calculate error term
-        rollErrorIntegrated = rollErrorIntegrated + roll;
+        // rightside roll -> positive roll degrees
+        // leftside roll -> negative roll values 
 
-        rollError = (5 * roll);            // + (0.25 * rollErrorIntegrated) + (0.25 * normGyro.YAxis); // proportional term + integral term + derivative term
+        // Proportional Term
+        proportional = rollPgain * roll;
+
+        // Integral Term
+        integral = integral + (roll * rollIgain);
+
+        if(integral > 10){
+            integral = 10;
+        }
+
+        // Derivative Term
+        derivative = rollDgain * (roll - previousRoll)/timeStep; 
+
+        previousRoll = roll;
+
+        rollCorrection = proportional + integral + derivative;
+       
+        Serial.print( " proportional = ");
+        Serial.print(proportional);
+        Serial.print( " integral = ");
+        Serial.print(integral);
+        Serial.print( " derivative = ");
+        Serial.print(derivative);
+        Serial.print( " rollCorrection = ");
+        Serial.print(rollCorrection);
+
+
+        // SATURATION POSSIBLE 
+        frontRight = throttle + rollCorrection; // - pitchCorrection + yawCorrection;
+        if(frontRight > SERVOMAX) { frontRight = SERVOMAX;}
+        if(frontRight < SERVOMIN) { frontRight = SERVOMIN;}  
         
+        frontLeft = throttle - rollCorrection; // - pitchCorrection - yawCorrection;    
+        if(frontLeft > SERVOMAX) { frontLeft = SERVOMAX; }
+        if(frontLeft < SERVOMIN) { frontLeft = SERVOMIN; }
+        
+        backRight = throttle + rollCorrection; // + pitchCorrection - yawCorrection;          
+        if(backRight > SERVOMAX) { backRight = SERVOMAX; }
+        if(backRight < SERVOMIN) { backRight = SERVOMIN; }
+        
+        backLeft = throttle - rollCorrection; // + pitchCorrection + yawCorrection;             
+        if(backLeft > SERVOMAX) { backLeft = SERVOMAX; }
+        if(backLeft < SERVOMIN) { backLeft = SERVOMIN; }
+
+
 //        Serial.print( " throttle = ");
 //        Serial.print(throttle);
 //        Serial.print( " rollError = ");
 //        Serial.print(rollError);
-//        Serial.print( " rollErrorIntegrated = ");
-//        Serial.print(rollErrorIntegrated);
 //        Serial.print( " frontRight = ");
 //        Serial.print(frontRight);
 //        Serial.print( " frontLeft = ");
 //        Serial.print(frontLeft);
-//        Serial.print( " integral count = ");
-//        Serial.print(integralCount);
 
     
-        // PITCH
-        // forward pitch -> negative pitch values 
-        // backward pitch -> positive pitch values 
-        // ROLL 
-        // right side roll -> positive roll degrees
-        // leftside roll -> negative roll values 
-        // YAW
-        // clockwise yaw (right spin) -> negative yaw values
-        // counterclockwise yaw (left spin) -> positive yaw values
-
-
-        // SATURATION POSSIBLE HERE
-        frontRight = throttle + rollError;           // + frontPitchAdjust - rightRollAdjust + clockwiseYawAdjust;
-        if(frontRight > SERVOMAX) { frontRight = SERVOMAX; }
-        
-        frontLeft = throttle - rollError;            // + frontPitchAdjust + leftRollAdjust - counterclockwiseYawAdjust;
-        if(frontLeft > SERVOMAX) { frontLeft = SERVOMAX; }
-        
-        backRight = throttle + rollError;            // + backPitchAdjust - rightRollAdjust + clockwiseYawAdjust;
-        if(backRight > SERVOMAX) { backRight = SERVOMAX; }
-        
-        backLeft = throttle - rollError;             // + backPitchAdjust + leftRollAdjust - counterclockwiseYawAdjust;  //BACK LEFT STOPS BEFORE OTHER MOTORS TURN OFF
-        if(backLeft > SERVOMAX) { backLeft = SERVOMAX; }
-
-    
-        pwm.setPWM(0, 0, frontRight);
-        pwm.setPWM(3, 0, frontLeft);
-        pwm.setPWM(4, 0, backRight);
-        pwm.setPWM(7, 0, backLeft);
+//        pwm.setPWM(0, 0, frontRight);
+//        pwm.setPWM(3, 0, frontLeft);
+//        pwm.setPWM(4, 0, backRight);
+//        pwm.setPWM(7, 0, backLeft);
     
     
         // WAIT FULL TIME STEP BEFORE CONTINUING FOR SAKE OF GYRO READINGS
     
         // if this number is negative the timeStep is too short
-//        Serial.print(" Time to delay in milliseconds = ");
-//        Serial.print((timeStep*1000) - (millis() - millisecondsPassed));
+        Serial.print(" Time to delay in milliseconds = ");
+        Serial.print((timeStep*1000) - (millis() - millisecondsPassed));
         
     
         // Wait to full timeStep period
@@ -299,6 +328,13 @@ void loop() {
         
     }
 
-    // Serial.println();
+//    else{  // not stabilize mode 
+//        desiredPitch = map(inputPitch, 1000, 2000, -10, 10);
+//        desiredRoll = map(inputRoll, 1000, 2000, -10, 10);
+//        desiredYaw = map(inputYaw, 1000, 2000, -10, 10);
+//    }
+
+    Serial.println();
+    Serial.println();
   
 }
