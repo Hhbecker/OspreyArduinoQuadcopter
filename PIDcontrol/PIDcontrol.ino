@@ -51,9 +51,9 @@ float pitchErrorIntegrated;
 int yawCorrection;
 float yawErrorIntegrated;
 
-float rollPgain = 1;
-float rollIgain;
-float rollDgain;
+float rollPgain = 3;
+float rollIgain = 0.02;
+float rollDgain = 0.2;
 
 float pitchPgain;
 float pitchIgain;
@@ -80,7 +80,7 @@ MPU6050 mpu;
 
 // Timers
 unsigned long millisecondsPassed = 0;
-float timeStep = 0.05f;
+float timeStep = 0.06f;
 
 // Pitch, Roll and Yaw values
 float gyroPitch = 0.0;
@@ -207,18 +207,10 @@ void loop() {
     pitch = (0.98*gyroPitch) + (0.02*accelPitch);
     roll = (0.98*gyroRoll) + (0.02*accelRoll);
 
-    if(abs(pitch) > 90 || abs(roll) > 90){
+    if(abs(pitch) > 80 || abs(roll) > 80){
         abortSwitch = true;
     }
 
-//    // Output
-    Serial.print(" Pitch = ");
-    Serial.print(pitch);
-    Serial.print(" Roll = ");
-    Serial.print(roll);
-    Serial.print(" Yaw = ");
-    Serial.print(gyroYaw);
-    Serial.println();
 
     ///////// state estimation complete ///////////
 
@@ -236,6 +228,9 @@ void loop() {
     if(pulseIn(CH5, HIGH) > 1500){
         abortSwitch = true;
     }
+
+    Serial.print(abortSwitch);
+    Serial.print(" ");
     
     if(abortSwitch == true){
         pwm.setPWM(0, 0, SERVOMIN);
@@ -243,7 +238,6 @@ void loop() {
         pwm.setPWM(4, 0, SERVOMIN);
         pwm.setPWM(7, 0, SERVOMIN);
     } 
-
     // PID COMMANDS ////////////////////////////////////////////////
     else { // if (stabilize mode) {      
         
@@ -264,17 +258,38 @@ void loop() {
         // Derivative Term
         derivative = rollDgain * (roll - previousRoll)/timeStep; 
 
+        if(derivative > 30){
+            derivative = 30;
+        }
+        if(derivative < -30){
+            derivative = -30;
+        }
+
         previousRoll = roll;
 
-        rollCorrection = proportional + integral + derivative;
+        rollCorrection = proportional - derivative; //  + integral;
+
        
-        Serial.print( " proportional = ");
+            // Output
+//      Serial.print(" Roll = ");
+        Serial.print(roll);
+//      Serial.print(" Pitch = ");
+        Serial.print(" ");
+        Serial.print(pitch);
+//      Serial.print(" Yaw = ");
+        Serial.print(" ");
+        Serial.print(gyroYaw);
+//      Serial.print( " proportional = ");
+        Serial.print(" ");
         Serial.print(proportional);
-        Serial.print( " integral = ");
+//      Serial.print( " integral = ");
+        Serial.print(" ");
         Serial.print(integral);
-        Serial.print( " derivative = ");
+//      Serial.print( " derivative = ");
+        Serial.print(" ");
         Serial.print(derivative);
-        Serial.print( " rollCorrection = ");
+//      Serial.print( " rollCorrection = ");
+        Serial.print(" ");
         Serial.print(rollCorrection);
 
 
@@ -297,26 +312,32 @@ void loop() {
 
 
 //        Serial.print( " throttle = ");
-//        Serial.print(throttle);
+        Serial.print(" ");
+        Serial.print(throttle);
+        Serial.print(" ");
 //        Serial.print( " rollError = ");
 //        Serial.print(rollError);
 //        Serial.print( " frontRight = ");
-//        Serial.print(frontRight);
+        Serial.print(frontRight);
+        Serial.print(" ");
 //        Serial.print( " frontLeft = ");
-//        Serial.print(frontLeft);
+        Serial.print(frontLeft);
+        Serial.print(" ");
 
     
-//        pwm.setPWM(0, 0, frontRight);
-//        pwm.setPWM(3, 0, frontLeft);
-//        pwm.setPWM(4, 0, backRight);
-//        pwm.setPWM(7, 0, backLeft);
+        pwm.setPWM(0, 0, frontRight);
+        pwm.setPWM(3, 0, frontLeft);
+        pwm.setPWM(4, 0, backRight);
+        pwm.setPWM(7, 0, backLeft);
     
     
         // WAIT FULL TIME STEP BEFORE CONTINUING FOR SAKE OF GYRO READINGS
     
         // if this number is negative the timeStep is too short
-        Serial.print(" Time to delay in milliseconds = ");
+//        Serial.print(" Time to delay in milliseconds = ");
         Serial.print((timeStep*1000) - (millis() - millisecondsPassed));
+        Serial.print(" ");
+        Serial.print("END");
         
     
         // Wait to full timeStep period
@@ -334,7 +355,6 @@ void loop() {
 //        desiredYaw = map(inputYaw, 1000, 2000, -10, 10);
 //    }
 
-    Serial.println();
     Serial.println();
   
 }
