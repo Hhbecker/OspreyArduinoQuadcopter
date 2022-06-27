@@ -39,21 +39,26 @@ int backRight;
 int backLeft;
 
 // roll only
-int proportional;
-int integral;
-int derivative;
-
+float rollProportional;
+float rollIntegral = 0.0f;
+float rollDerivative;
 float previousRoll;
 int rollCorrection;
-float rollErrorIntegrated;
-int pitchCorrection;
-float pitchErrorIntegrated;
-int yawCorrection;
-float yawErrorIntegrated;
 
-float rollPgain = 3;
-float rollIgain = 0.02;
-float rollDgain = 0.2;
+
+float pitchProportional;
+float pitchIntegral = 0.0f;
+float pitchDerivative;
+float previousPitch;
+int pitchCorrection;
+
+
+
+// got better and better performance by continually dropping D gain, I think D gain could be lower and I might try raising P gain back up
+
+float rollPgain = 0.14; // 0.18
+float rollIgain = 0.06; 
+float rollDgain = 0.055; // 0.055
 
 float pitchPgain;
 float pitchIgain;
@@ -81,6 +86,7 @@ MPU6050 mpu;
 // Timers
 unsigned long millisecondsPassed = 0;
 float timeStep = 0.06f;
+float tDelay;
 
 // Pitch, Roll and Yaw values
 float gyroPitch = 0.0;
@@ -143,7 +149,8 @@ void setup() {
 //    Serial.println(" Pitch offset = ");
 //    Serial.println(pitchOffset);
 
-    int previousRoll = 0.0;
+    float previousRoll = 0.0;
+    float previousPitch = 0.0;
 
 }
 
@@ -241,76 +248,141 @@ void loop() {
     // PID COMMANDS ////////////////////////////////////////////////
     else { // if (stabilize mode) {      
         
-        // ROLL
+        // ROLL /////////////////////////////////////////////////////////////////////////
         // rightside roll -> positive roll degrees
         // leftside roll -> negative roll values 
 
+    
+
         // Proportional Term
-        proportional = rollPgain * roll;
+        rollProportional = rollPgain * roll;
 
         // Integral Term
-        integral = integral + (roll * rollIgain);
+        if(throttle > 310){
+            rollIntegral = rollIntegral + (roll * rollIgain);
+        }
 
-        if(integral > 10){
-            integral = 10;
+        if(rollIntegral > 10){
+            rollIntegral = 10;
+        }
+        if(rollIntegral < -10){
+            rollIntegral = -10;
         }
 
         // Derivative Term
-        derivative = rollDgain * (roll - previousRoll)/timeStep; 
+        rollDerivative = (rollDgain * (roll - previousRoll)/timeStep); 
+        // derivative = rollDgain * normGyro.YAxis;
 
-        if(derivative > 30){
-            derivative = 30;
+        //derivative = rollDgain * ((previousAngularRate + normGyro.YAxis)/2); 
+        //previousAngularRate = normGyro.YAxis; 
+        //prevPreviousAngularRate = previousAngularRate;
+
+        
+        if(rollDerivative > 10){
+            rollDerivative = 10;
         }
-        if(derivative < -30){
-            derivative = -30;
+        if(rollDerivative < -10){
+            rollDerivative = -10;
         }
 
         previousRoll = roll;
 
-        rollCorrection = proportional - derivative; //  + integral;
+        rollCorrection = rollProportional + rollDerivative + rollIntegral;
 
-       
-            // Output
-//      Serial.print(" Roll = ");
-        Serial.print(roll);
-//      Serial.print(" Pitch = ");
-        Serial.print(" ");
-        Serial.print(pitch);
-//      Serial.print(" Yaw = ");
-        Serial.print(" ");
-        Serial.print(gyroYaw);
-//      Serial.print( " proportional = ");
-        Serial.print(" ");
-        Serial.print(proportional);
-//      Serial.print( " integral = ");
-        Serial.print(" ");
-        Serial.print(integral);
-//      Serial.print( " derivative = ");
-        Serial.print(" ");
-        Serial.print(derivative);
-//      Serial.print( " rollCorrection = ");
-        Serial.print(" ");
-        Serial.print(rollCorrection);
+        ///////////// PITCH //////////////////////////////////////////////////////////////////
 
 
-        // SATURATION POSSIBLE 
-        frontRight = throttle + rollCorrection; // - pitchCorrection + yawCorrection;
+        // Proportional Term
+        pitchProportional = pitchPgain * pitch;
+
+        // Integral Term
+        if(throttle > 310){
+            pitchIntegral = pitchIntegral + (pitch * pitchIgain);
+        }
+
+        if(pitchIntegral > 10){
+            pitchIntegral = 10;
+        }
+        if(pitchIntegral < -10){
+            pitchIntegral = -10;
+        }
+
+        // Derivative Term
+        pitchDerivative = (pitchDgain * (pitch - previousPitch)/timeStep); 
+        // derivative = rollDgain * normGyro.YAxis;
+
+        //derivative = rollDgain * ((previousAngularRate + normGyro.YAxis)/2); 
+        //previousAngularRate = normGyro.YAxis; 
+        //prevPreviousAngularRate = previousAngularRate;
+
+        
+        if(pitchDerivative > 10){
+            pitchDerivative = 10;
+        }
+        if(pitchDerivative < -10){
+            pitchDerivative = -10;
+        }
+
+        previousPitch = pitch;
+
+        pitchCorrection = pitchProportional + pitchDerivative + pitchIntegral;
+
+
+
+
+
+
+        ////////////////////////////////////
+
+
+        frontRight = throttle + rollCorrection - pitchCorrection; // - pitchCorrection + yawCorrection;
         if(frontRight > SERVOMAX) { frontRight = SERVOMAX;}
         if(frontRight < SERVOMIN) { frontRight = SERVOMIN;}  
         
-        frontLeft = throttle - rollCorrection; // - pitchCorrection - yawCorrection;    
+        frontLeft = throttle - rollCorrection - pitchCorrection;// - pitchCorrection - yawCorrection;    
         if(frontLeft > SERVOMAX) { frontLeft = SERVOMAX; }
         if(frontLeft < SERVOMIN) { frontLeft = SERVOMIN; }
         
-        backRight = throttle + rollCorrection; // + pitchCorrection - yawCorrection;          
+        backRight = throttle + rollCorrection + pitchCorrection; // + pitchCorrection - yawCorrection;          
         if(backRight > SERVOMAX) { backRight = SERVOMAX; }
         if(backRight < SERVOMIN) { backRight = SERVOMIN; }
         
-        backLeft = throttle - rollCorrection; // + pitchCorrection + yawCorrection;             
+        backLeft = throttle - rollCorrection + pitchCorrection; // + pitchCorrection + yawCorrection;             
         if(backLeft > SERVOMAX) { backLeft = SERVOMAX; }
         if(backLeft < SERVOMIN) { backLeft = SERVOMIN; }
 
+    
+        pwm.setPWM(0, 0, frontRight);
+        pwm.setPWM(3, 0, frontLeft);
+        pwm.setPWM(4, 0, backRight);
+        pwm.setPWM(7, 0, backLeft);
+    
+    
+        // WAIT FULL TIME STEP BEFORE CONTINUING FOR SAKE OF GYRO READINGS
 
+        tDelay = (timeStep*1000) - (millis() - millisecondsPassed);
+
+                    // Output
+////      Serial.print(" Roll = ");
+//        Serial.print(roll);
+////      Serial.print(" Pitch = ");
+//        Serial.print(" ");
+//        Serial.print(pitch);
+////      Serial.print(" Yaw = ");
+//        Serial.print(" ");
+//        Serial.print(gyroYaw);
+////      Serial.print( " proportional = ");
+//        Serial.print(" ");
+//        Serial.print(proportional);
+////      Serial.print( " integral = ");
+//        Serial.print(" ");
+//        Serial.print(integral);
+////      Serial.print( " derivative = ");
+//        Serial.print(" ");
+//        Serial.print(derivative);
+////      Serial.print( " rollCorrection = ");
+//        Serial.print(" ");
+//        Serial.print(rollCorrection);
 //        Serial.print( " throttle = ");
         Serial.print(" ");
         Serial.print(throttle);
@@ -323,25 +395,19 @@ void loop() {
 //        Serial.print( " frontLeft = ");
         Serial.print(frontLeft);
         Serial.print(" ");
-
-    
-        pwm.setPWM(0, 0, frontRight);
-        pwm.setPWM(3, 0, frontLeft);
-        pwm.setPWM(4, 0, backRight);
-        pwm.setPWM(7, 0, backLeft);
-    
-    
-        // WAIT FULL TIME STEP BEFORE CONTINUING FOR SAKE OF GYRO READINGS
-    
-        // if this number is negative the timeStep is too short
-//        Serial.print(" Time to delay in milliseconds = ");
-        Serial.print((timeStep*1000) - (millis() - millisecondsPassed));
+        Serial.print(tDelay);
         Serial.print(" ");
         Serial.print("END");
         
-    
-        // Wait to full timeStep period
-
+        if(tDelay < 1){
+            abortSwitch = true;
+            
+            pwm.setPWM(0, 0, SERVOMIN);
+            pwm.setPWM(3, 0, SERVOMIN);
+            pwm.setPWM(4, 0, SERVOMIN);
+            pwm.setPWM(7, 0, SERVOMIN);
+            
+        }
         // millis() - millisecondsPassed = the time in milliseconds spent running the loop 
         // delay the timestep - time already spent running this script
         // delay command takes an input in milliseconds and delays for that amount of milliseconds

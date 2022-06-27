@@ -37,7 +37,7 @@ float yawErrorIntegrated;
 
 float rollPgain = 1;
 float rollIgain;
-float rollDgain;
+float rollDgain = 0.1;
 
 float pitchPgain;
 float pitchIgain;
@@ -184,6 +184,12 @@ void loop() {
 
     // Derivative Term
     derivative = rollDgain * (roll - previousRoll)/timeStep; 
+    if(derivative > 40){
+        derivative = 40;
+    }
+    if(derivative < -40){
+        derivative = -40;
+    }
 
     previousRoll = roll;
 
