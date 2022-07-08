@@ -3,6 +3,10 @@ Flight Controller for the Osprey Arduino Quadcopter
 
 ****************************************************/
 
+// This is the code used in the last flight test
+
+// when code in main branch is successfuly flown delete this branch
+
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 #include <math.h>
