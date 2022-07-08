@@ -8,101 +8,100 @@
 
 // global variables defined in 
 
-//extern bool debug = false; 
-//extern bool stabilizeMode = true;
-//extern bool abortSwitch = false;
-//
-//extern float rollPgain = 0.04;
-//extern float rollIgain = 0.003; // 0.003 
-//extern float rollDgain = 0.06; // 0.06
-//
-//extern float pitchPgain = 0.07;
-//extern float pitchIgain = 0.007; // 0.007
-//extern float pitchDgain = 0.06; // 0.07
-//
-//extern float yawPgain = 0.02;
-//extern float yawIgain = 0.00;
-//extern float yawDgain = 0.03;
-//
-//// CONTROLLER AND RECIEVER SETUP
-//
-//int CH1 = 13;
-//int CH2 = 12;
-//int CH3 = 11;
-//int CH4 = 10;
-//int CH5 = 9;
-//int CH6 = 8;
-//
-//int ch1Value;
-//int ch2Value;
-//int ch3Value;
-//int ch4Value;
-//int ch5Value;
-//unsigned long timeout = 30000; // 1,000,000 = 1 second
-//
-//
-//int throttle;
-//int frontRight;
-//int frontLeft;
-//int backRight;
-//int backLeft;
-//
-//// roll only
-//float rollValue = 0.0f;
-//float rollError;
-//float rollProportional;
-//float rollIntegral = 0.0f;
-//float rollDerivative;
-//float rollCorrection = 0;
-//
-//float pitchValue = 0.0f;
-//float pitchError;
-//float pitchProportional;
-//float pitchIntegral = 0.0f;
-//float pitchDerivative;
-//float pitchCorrection;
-//
-//float yawValue = 0.0f;
-//float yawError;
-//float yawProportional;
-//float yawDerivative;
-//float yawCorrection;
-//
-//// SERVO BOARD SETUP
-//// called this way, it uses the default address 0x40
-//Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-//
-//int SERVOMIN = 215; // minimum pulse length count (out of 4096) the ESC will recognize
-//int SERVOMAX = 300; // maximum pulse length count (out of 4096) the ESC will recognize // FLIGHT = 400 ROLL TEST = 350
-//
-//// MPU6050 SETUP
-//// Because of the mounting orientation of the chip on the drone: 
-//// PITCH = X axis
-//// ROLL = y axis
-//
-//MPU6050 mpu;
-//
-//// Timers
-//unsigned long timer = 0;
-//float timeStep = 0.0;
-//
-//// Pitch, Roll and Yaw values
-//float gyroPitch;
-//float gyroRoll;
-//float gyroYaw;
-//float accelPitch;
-//float pitchOffset;
-//float accelRoll;
-//float rollOffset;
-//float pitch;
-//float roll;
-//
-//Vector normGyro;
-//Vector normAccel;
+extern bool debug; 
+extern bool stabilizeMode;
+extern bool abortSwitch;
+
+extern float rollPgain;
+extern float rollIgain; 
+extern float rollDgain;
+
+extern float pitchPgain;
+extern float pitchIgain;
+extern float pitchDgain;
+
+extern float yawPgain;
+extern float yawIgain;
+extern float yawDgain;
+
+// CONTROLLER AND RECIEVER SETUP
+
+extern int CH1;
+extern int CH2;
+extern int CH3;
+extern int CH4;
+extern int CH5;
+extern int CH6;
+
+extern int ch1Value;
+extern int ch2Value;
+extern int ch3Value;
+extern int ch4Value;
+extern int ch5Value;
+extern unsigned long timeout;
 
 
+extern int throttle;
+extern int frontRight;
+extern int frontLeft;
+extern int backRight;
+extern int backLeft;
 
+// roll only
+extern float rollValue;
+extern float rollError;
+extern float rollProportional;
+extern float rollIntegral;
+extern float rollDerivative;
+extern float rollCorrection;
 
+extern float pitchValue;
+extern float pitchError;
+extern float pitchProportional;
+extern float pitchIntegral;
+extern float pitchDerivative;
+extern float pitchCorrection;
+
+extern float yawValue;
+extern float yawError;
+extern float yawProportional;
+extern float yawDerivative;
+extern float yawCorrection;
+
+// SERVO BOARD SETUP
+// called this way, it uses the default address 0x40
+extern Adafruit_PWMServoDriver pwm;
+
+extern int SERVOMIN; // minimum pulse length count (out of 4096) the ESC will recognize
+extern int SERVOMAX; // maximum pulse length count (out of 4096) the ESC will recognize // FLIGHT = 400 ROLL TEST = 350
+
+extern int JOYSTICKMIN;
+extern int JOYSTICKMAX;
+
+// MPU6050 SETUP
+// Because of the mounting orientation of the chip on the drone: 
+// PITCH = X axis
+// ROLL = y axis
+
+extern MPU6050 mpu;
+
+// Timers
+extern unsigned long timer;
+extern float timeStep;
+
+// Pitch, Roll and Yaw values
+extern float gyroPitch;
+extern float gyroRoll;
+extern float gyroYaw;
+extern float accelPitch;
+extern float pitchOffset;
+extern float accelRoll;
+extern float rollOffset;
+extern float pitch;
+extern float roll;
+
+extern Vector normGyro;
+extern Vector normAccel;
 
 
 // Setup functions 
@@ -116,6 +115,9 @@ void setAccelerometerOffset();
 void getStateEstimation();
 int mapReceiver(int input);
 void readThrottle();
+void readRoll();
+void readPitch();
+void readYaw();
 void checkAbortConditions();
 void killMotors();
 void getRollCorrection();
