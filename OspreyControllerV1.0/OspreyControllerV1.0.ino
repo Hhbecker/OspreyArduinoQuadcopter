@@ -7,6 +7,7 @@ Flight Controller for the Osprey Arduino Quadcopter
 #include <Adafruit_PWMServoDriver.h>
 #include <math.h>
 #include <MPU6050.h>
+#include "functions.h"
 
 bool debug = false; 
 bool stabilizeMode = true;
@@ -26,12 +27,12 @@ float yawDgain = 0.03;
 
 // CONTROLLER AND RECIEVER SETUP
 
-#define CH1 13
-#define CH2 12
-#define CH3 11
-#define CH4 10
-#define CH5 9
-#define CH6 8
+int CH1 = 13;
+int CH2 = 12;
+int CH3 = 11;
+int CH4 = 10;
+int CH5 = 9;
+int CH6 = 8;
 
 //Floating point math is also much slower than integer math in performing calculations, 
 //so should be avoided if, for example, a loop has to run at top speed for a critical 
@@ -79,8 +80,8 @@ float yawCorrection;
 // called this way, it uses the default address 0x40
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
-#define SERVOMIN  215 // minimum pulse length count (out of 4096) the ESC will recognize
-#define SERVOMAX  300 // maximum pulse length count (out of 4096) the ESC will recognize // FLIGHT = 400 ROLL TEST = 350
+int SERVOMIN = 215; // minimum pulse length count (out of 4096) the ESC will recognize
+int SERVOMAX = 300; // maximum pulse length count (out of 4096) the ESC will recognize // FLIGHT = 400 ROLL TEST = 350
 
 // MPU6050 SETUP
 // Because of the mounting orientation of the chip on the drone: 
