@@ -9,11 +9,11 @@ Features:
 
 ### Flight analysis 
 <p align="center">
-<img src="/images/flights/test1.mov" style="width:200px;height:170px;"/>
+<img src="/images/flightTests/test1.gif" style="width:200px;height:170px;"/>
 </p>
 
 <p align="center">
-<img src="/images/flights/test1.gif" style="width:200px;height:170px;"/>
+<img src="/images/flightTests/test2.gif" style="width:200px;height:170px;"/>
 </p>
 
 
