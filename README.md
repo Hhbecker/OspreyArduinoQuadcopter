@@ -10,7 +10,7 @@ Features:
 ### Flight analysis 
 
 <p align="center">
-<img src="/images/flightTests/test2.gif" width="250" height="250"/>
+<img src="/images/flightTests/test2.gif" width="250" height="600"/>
 </p>
 
 <p align="center">
