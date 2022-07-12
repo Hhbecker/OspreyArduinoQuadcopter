@@ -8,9 +8,6 @@ Features:
 * arduino uno as flight controller with roughly 0.05 second loop time
 
 ### Flight analysis 
-<p align="center">
-<img src="/images/flightTests/test1.gif" style="width:200px;height:400px;"/>
-</p>
 
 <p align="center">
 <img src="/images/flightTests/test2.gif" style="width:200px;height:400px;"/>
