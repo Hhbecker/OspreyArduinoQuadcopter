@@ -4,16 +4,11 @@ Flight Controller for the Osprey Arduino Quadcopter
 ****************************************************/
 
 /* 
- *  important notes
- *  -timestep is initialized to zero meaning its zero for the first call to getStateEstimation()
- *  -when reading pulse from arduino pins connected to reciever in each readThrottle etc function the policy is to set the reciever value to zero if the timeout is reached
- *  -there is currently no anti windup scheme for i term nor is there a throttle minimum for the i term
- *  
- *  
+ *  Important Remdiners
+ *  -timestep initialized to zero meaning it's zero for the first call to getStateEstimation()
+ *  -when reading pulse from arduino pins connected to reciever the policy is to set the reciever value to zero if the timeout is reached
+ *  -currently no anti windup scheme or throttle minimum for i term
  */
-
-
-
 
 
 #include <Wire.h>

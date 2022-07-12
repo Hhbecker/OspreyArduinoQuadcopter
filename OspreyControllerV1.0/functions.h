@@ -1,3 +1,9 @@
+/*************************************************** 
+Flight controller header file
+July 2022
+Henry Becker
+****************************************************/
+
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
