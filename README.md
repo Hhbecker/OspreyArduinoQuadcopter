@@ -9,15 +9,15 @@ Features:
 
 ### Flight analysis 
 <p align="center">
-<img src="/images/flightTests/test1.gif" style="width:200px;height:170px;"/>
+<img src="/images/flightTests/test1.gif" style="width:200px;height:400px;"/>
 </p>
 
 <p align="center">
-<img src="/images/flightTests/test2.gif" style="width:200px;height:170px;"/>
+<img src="/images/flightTests/test2.gif" style="width:200px;height:400px;"/>
 </p>
 
 <p align="center">
-<img src="/images/fritzing.jpg" style="width:200px;height:170px;"/>
+<img src="/images/fritzing.jpg" style="width:600px;height:400px;"/>
 </p>
 
 
