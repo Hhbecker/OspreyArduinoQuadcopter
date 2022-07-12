@@ -10,8 +10,10 @@ Features:
 ### Flight analysis 
 
 <p align="center">
-<img src="/images/flightTests/test2.gif" width="250" height="600"/>
+<img src="/images/flightTests/test2.gif" />
 </p>
+
+// width="250" height="600"
 
 <p align="center">
 <img src="/images/fritzing.jpg" style="width:600px;height:400px;"/>
