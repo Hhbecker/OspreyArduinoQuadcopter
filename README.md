@@ -9,7 +9,7 @@ Features:
 
 ### ===== Flight Video =======
 <p align="center">
-<img src="/images/flightTests/test2.gif" width="300"/>
+<img src="/images/flightTests/test1.gif" width="300"/>
 </p>
 
 ### ==========================
