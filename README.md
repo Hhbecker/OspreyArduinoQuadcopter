@@ -9,16 +9,17 @@ Features:
 
 ### Flight analysis 
 <p align="center">
-<img src="/images/flightTests/test1.gif"/>
+<img src="/images/flightTests/test1.gif" style="width:200px;height:170px;"/>
 </p>
 
 <p align="center">
-<img src="/images/flightTests/test2.gif"/>
+<img src="/images/flightTests/test2.gif" style="width:200px;height:170px;"/>
 </p>
 
 <p align="center">
-<img src="/images/fritzing.jpg"/>
+<img src="/images/fritzing.jpg" style="width:200px;height:170px;"/>
 </p>
+
 
 
 ### Code explanation 
