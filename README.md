@@ -16,6 +16,9 @@ Features:
 <img src="/images/flightTests/test2.gif"/>
 </p>
 
+<p align="center">
+<img src="/images/fritzing.jpg"/>
+</p>
 
 
 ### Code explanation 
