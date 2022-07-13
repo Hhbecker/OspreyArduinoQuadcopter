@@ -26,11 +26,11 @@ This drone project also provided me experience developing embedded software for 
 A drone has three axes of rotation: roll, pitch, and yaw. The primary goal of the Osprey Flight Controller V1.0 is to maintain stability in flight by continously adjusting the speed of each individual motor in order to abruptly and accurately correct any unwanted rotation about any of the three axes.
 
 <p align="center">
-<img src="/images/rotation.jpg" width="350"/>
+<img src="/images/rotation.jpg" width="300"/>
 </p>
 
 <p align="center">
-Vizualization of the three axes of rotation.
+<b>Vizualization of the three axes of rotation.</b>
 </p>
 
 
