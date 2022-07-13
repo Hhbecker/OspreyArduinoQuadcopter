@@ -7,18 +7,15 @@ Features:
 * joystick throttle mapped directly to motor speed
 * arduino uno as flight controller with roughly 0.05 second loop time
 
-### ===== Flight Video =======
 <p align="center">
-<img src="/images/flightTests/test2.gif" width="300"/>
+<img src="/images/flightTests/test2.gif" width="500"/>
 </p>
 
-### ==========================
-
 
 
 
 <p align="center">
-<img src="/images/fritzing.jpg" style="width:600px;height:400px;"/>
+<img src="/images/fritzing.jpg" width="50%"/>
 </p>
 
 
