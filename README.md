@@ -7,10 +7,7 @@ A from scratch quadcopter build with an Arduino programmed as a flight controlle
 * joystick throttle mapped directly to motor speed
 * arduino uno as flight controller with roughly 0.05 second loop time
 
-<p align="center">
-<img src="/images/flightTests/test2.gif" width="400"/>
-</p>
-
+## Circuit Diagram
 <p align="center">
 <img src="/images/fritzing.jpg" width="100%"/>
 </p>
@@ -19,14 +16,14 @@ A from scratch quadcopter build with an Arduino programmed as a flight controlle
 ## Code explanation 
 The arduino runs a continuous loop with the same main functions called each time the loop executes.
 <p align="center">
-<img src="/images/mainLoop1.jpg" width="400"/>
+<img src="/images/mainLoop1.jpg" width="300"/>
 </p>
 
 
 #### Why I'm interested in drones
-I've really enjoyed this project because it exposed me to several different interesting areas of science and engineering.  
+I've really enjoyed this project because it exposed me to several different interesting areas of science and engineering. Drones rely on physics, electrical engineering, computer science, and math in order to fly. I got experience developing embedded software for a real-time application.
 
-###### The areas of science and engineering that drones rely on include but are not limited to: 
+
 * Physics: to understand the forces acting on the drone in flight
 * Electrical engineering: circuit design and construction
 * Embedded software development: programming on a resource constrained microcontroller 
@@ -61,12 +58,17 @@ Agriculture
 ### Photos of construction
 
 <p align="center">
-<img src="/images/dronePictures/build1.jpg" width="533"/>
-<img src="/images/dronePictures/build2.jpg" width="400"/>
-<img src="/images/dronePictures/build3.jpg" width="400"/>
-<img src="/images/dronePictures/finished1.jpg" width="400"/>
-<img src="/images/dronePictures/finished2.jpg" width="400"/>
-<img src="/images/dronePictures/finished3.jpg" width="400"/>
+<img src="/images/dronePictures/build1.jpg" width="400"/>
+<img src="/images/dronePictures/build2.jpg" width="300"/>
+<img src="/images/dronePictures/build3.jpg" width="300"/>
+
+<img src="/images/dronePictures/finished1.jpg" width="300"/>
+<img src="/images/dronePictures/finished2.jpg" width="300"/>
+<img src="/images/dronePictures/finished3.jpg" width="300"/>
+</p>
+
+<p align="center">
+<img src="/images/flightTests/test2.gif" width="400"/>
 </p>
 
 ### Parts list with explanation of each part
