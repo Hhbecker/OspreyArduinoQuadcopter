@@ -19,7 +19,7 @@ A from scratch quadcopter build with an Arduino programmed as a flight controlle
 ## Code explanation 
 The arduino runs a continuous loop with the same main functions called each time the loop executes.
 <p align="center">
-<img src="/images/mainLoop1.jpg" width="100%"/>
+<img src="/images/mainLoop1.jpg" width="400"/>
 </p>
 
 
@@ -61,12 +61,12 @@ Agriculture
 ### Photos of construction
 
 <p align="center">
-<img src="/images/dronePictures/build1.jpg" width="100%"/>
-<img src="/images/dronePictures/build2.jpg" width="100%"/>
-<img src="/images/dronePictures/build3.jpg" width="100%"/>
-<img src="/images/dronePictures/finished1.jpg" width="100%"/>
-<img src="/images/dronePictures/finished2.jpg" width="100%"/>
-<img src="/images/dronePictures/finished3.jpg" width="100%"/>
+<img src="/images/dronePictures/build1.jpg" width="533"/>
+<img src="/images/dronePictures/build2.jpg" width="400"/>
+<img src="/images/dronePictures/build3.jpg" width="400"/>
+<img src="/images/dronePictures/finished1.jpg" width="400"/>
+<img src="/images/dronePictures/finished2.jpg" width="400"/>
+<img src="/images/dronePictures/finished3.jpg" width="400"/>
 </p>
 
 ### Parts list with explanation of each part
