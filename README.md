@@ -2,15 +2,13 @@
 The Osprey Drone Mark I with Osprey Flight Controller Version 1.0
 </h1>
 
-# The Osprey Drone Mark I with Osprey Flight Controller Version 1.0
-
 <p align="center">
 <img src="/images/flightTests/flightPhoto.jpg" width="350"/>
 </p>
-<p align="center">
+
+<h5 align="center">
 A custom quadcopter build with an Arduino Uno flight controller. 
-</p>
-A custom quadcopter build with an Arduino Uno flight controller. 
+</h5>
 
 #### Features:
 * Automated PID stabilization for roll pitch and yaw axes 
@@ -19,10 +17,11 @@ A custom quadcopter build with an Arduino Uno flight controller.
 * Roughly 20Hz flight controller refresh rate
 
 ### Why Drones?
-I find drones to be the perfect engineering challenge because they require knowledge from a range of disciplines including physics, electrical engineering, computer science, and math. 
+I see drones as the perfect engineering challenge because they require knowledge from a range of disciplines including physics, electrical engineering, computer science, and math. 
 This drone project also provided me experience developing embedded software for a real-time application, designing and constructing circuits and electrical hardware, and implementing an algorithm based on control theory mathematics. Not only are drones a great engineering challenge but they also have innumerous real world applications including in disaster relief, law enforcement, agriculture, and war. 
 
 ### The basics of quadcopter flight
+
 
 ### Circuit Diagram
 <p align="center">
