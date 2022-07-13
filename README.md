@@ -15,7 +15,7 @@ Features:
 
 
 <p align="center">
-<img src="/images/fritzing.jpg" width="85%"/>
+<img src="/images/fritzing.jpg" width="100%"/>
 </p>
 
 
