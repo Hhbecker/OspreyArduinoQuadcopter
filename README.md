@@ -1,3 +1,7 @@
+<h1 align="center">
+The Osprey Drone Mark I with Osprey Flight Controller Version 1.0
+</h1>
+
 # The Osprey Drone Mark I with Osprey Flight Controller Version 1.0
 
 <p align="center">
