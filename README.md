@@ -2,7 +2,9 @@
 
 <p align="center">
 <img src="/images/flightTests/flightPhoto.jpg" width="350"/>
-Custom quadcopter
+</p>
+<p align="center">
+A custom quadcopter build with an Arduino Uno flight controller. 
 </p>
 A custom quadcopter build with an Arduino Uno flight controller. 
 
