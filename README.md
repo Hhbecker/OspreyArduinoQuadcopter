@@ -1,9 +1,9 @@
 # The Osprey Drone Mark I with Osprey Flight Controller Version 1.0
-A custom quadcopter build with an Arduino Uno flight controller. 
 
 <p align="center">
 <img src="/images/flightTests/flightPhoto.jpg" width="350"/>
 </p>
+A custom quadcopter build with an Arduino Uno flight controller. 
 
 #### Features:
 * automated PID stabilization for roll pitch and yaw axes 
@@ -35,7 +35,7 @@ The arduino runs a continuous loop with the same main functions called each time
 * replace arduino uno with multiple arduino nanos
 * redesign hardware to be more condensed and centralized on drone frame
 
-### Design flaws 
+### Design Weaknesses  
 * maybe wires were too long 
 
 ### Photos of construction
@@ -48,12 +48,13 @@ The arduino runs a continuous loop with the same main functions called each time
 <img src="/images/dronePictures/finished1.jpg" width="300"/>
 <img src="/images/dronePictures/finished2.jpg" width="300"/>
 <img src="/images/dronePictures/finished3.jpg" width="300"/>
+<img src="/images/dronePictures/finished4.jpg" />
 </p>
 
 <p align="center">
 <img src="/images/flightTests/test2.gif" width="400"/>
 </p>
 
-### Parts list with explanation of each part
+### Parts List
 
 
