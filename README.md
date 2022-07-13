@@ -1,7 +1,7 @@
 # The Osprey Drone Mark I with Osprey Flight Controller Version 1.0
 A from scratch quadcopter build with an Arduino programmed as a flight controller. 
 
-Features:
+#### Features:
 * automated PID stabilization for roll pitch and yaw axes 
 * joystick control of roll pitch and yaw axes 
 * joystick throttle mapped directly to motor speed
@@ -11,77 +11,39 @@ Features:
 <img src="/images/flightTests/test2.gif" width="400"/>
 </p>
 
-
-
-
 <p align="center">
 <img src="/images/fritzing.jpg" width="100%"/>
 </p>
 
 
-
-### Code explanation 
+## Code explanation 
 The arduino runs a continuous loop with the same main functions called each time the loop executes.
+<p align="center">
+<img src="/images/mainLoop1.jpg" width="100%"/>
+</p>
 
-Main loop functions: 
-Firstly, we need to keep track of the time the loop takes to run in order to integrate the gyroscope data with respect to time. To keep track of the time the loop takes to run we call the micros() function at the beginning and end of the loop 
 
-#### 1. Keep track of the time the loop takes
-```
-void loop() {
+#### Why I'm interested in drones
+I've really enjoyed this project because it exposed me to several different interesting areas of science and engineering.  
 
-    // The micros() function returns the number of microseconds passed since the arduino  began running the current program.
+###### The areas of science and engineering that drones rely on include but are not limited to: 
+* Physics: to understand the forces acting on the drone in flight
+* Electrical engineering: circuit design and construction
+* Embedded software development: programming on a resource constrained microcontroller 
+* Real time programming: programming where the timing of the program is crucial
+* Control theory: understanding how to optimize the control algorithm using mathematical techniques from control theory 
+* Wireless communication: understanding the transfer of information from the RC transmitter to the reciever
 
-    timer = micros();
 
-    // All functions go here //
-    
-    // Call the micros function again and subtract the new microsecond value from the value returned at the beginning of the program.
+All of this requires a healthy amount of math
 
-    timeStep = (float) (micros() - timer)/1000000;
-}
-```
+Real world applications for drones
+Disaster relief 
+Law enforcement
+War
+Agriculture
 
-#### 2. Calculate the drone's position along the X, Y, and Z axes using sensor data
-```
-getStateEstimation();
-```
 
-#### 3. Check abort conditions and turn off motors if any abort conditions are met
-```
-checkAbortConditions();
-```
-
-#### 4. Read the throttle value sent from joystick to onboard reciever
-```
-readThrottle();
-```
-
-#### 5. Read roll pitch and yaw values from joysticks when stabilize mode is off
-```
-    if(stabilizeMode == false){
-        readRoll();
-        readPitch();
-        readYaw();
-    }
-```
-
-#### 6. Calculate changes to motor speeds using PID control algorithm to achieve desired roll pitch and yaw angles 
-```
-    getRollCorrection();
-    getPitchCorrection();
-    getYawCorrection();
-```   
-#### 7. Send new motor speeds to servo control board
-```
-    setFrontRight();
-    setFrontLeft();
-    setBackRight();
-    setBackLeft();
-    
-```
-
-#### Why I like drones 
 
 ### Next Steps:
 * add altitude control 
@@ -97,6 +59,16 @@ readThrottle();
 ### PID tuning 
 ### Fritzing diagram
 ### Photos of construction
+
+<p align="center">
+<img src="/images/dronePictures/build1.jpg" width="100%"/>
+<img src="/images/dronePictures/build2.jpg" width="100%"/>
+<img src="/images/dronePictures/build3.jpg" width="100%"/>
+<img src="/images/dronePictures/finished1.jpg" width="100%"/>
+<img src="/images/dronePictures/finished2.jpg" width="100%"/>
+<img src="/images/dronePictures/finished3.jpg" width="100%"/>
+</p>
+
 ### Parts list with explanation of each part
 
 
