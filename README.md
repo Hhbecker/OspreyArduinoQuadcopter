@@ -2,14 +2,15 @@
 
 <p align="center">
 <img src="/images/flightTests/flightPhoto.jpg" width="350"/>
+Custom quadcopter
 </p>
 A custom quadcopter build with an Arduino Uno flight controller. 
 
 #### Features:
-* automated PID stabilization for roll pitch and yaw axes 
-* joystick control of roll pitch and yaw axes 
-* joystick throttle mapped directly to motor speed
-* arduino uno as flight controller with roughly 0.05 second loop time
+* Automated PID stabilization for roll pitch and yaw axes 
+* Joystick control of roll pitch and yaw axes 
+* Joystick throttle mapped directly to motor speed
+* Roughly 20Hz flight controller refresh rate
 
 ### Why Drones?
 I find drones to be the perfect engineering challenge because they require knowledge from a range of disciplines including physics, electrical engineering, computer science, and math. 
@@ -36,19 +37,17 @@ The arduino runs a continuous loop with the same main functions called each time
 * redesign hardware to be more condensed and centralized on drone frame
 
 ### Design Weaknesses  
-* maybe wires were too long 
+* 
+* 
+* 
 
-### Photos of construction
 
+### Construction Process
 <p align="center">
 <img src="/images/dronePictures/build1.jpg" width="400"/>
 <img src="/images/dronePictures/build2.jpg" width="300"/>
 <img src="/images/dronePictures/build3.jpg" width="300"/>
-
-<img src="/images/dronePictures/finished1.jpg" width="300"/>
-<img src="/images/dronePictures/finished2.jpg" width="300"/>
-<img src="/images/dronePictures/finished3.jpg" width="300"/>
-<img src="/images/dronePictures/finished4.jpg" />
+<img src="/images/dronePictures/finished4.jpg" width="400"/>
 </p>
 
 <p align="center">
