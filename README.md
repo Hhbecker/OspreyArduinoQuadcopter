@@ -1,5 +1,9 @@
 # The Osprey Drone Mark I with Osprey Flight Controller Version 1.0
-A from scratch quadcopter build with an Arduino programmed as a flight controller. 
+A custom quadcopter build with an Arduino Uno flight controller. 
+
+<p align="center">
+<img src="/images/flightTests/flightPhoto.jpg" width="350"/>
+</p>
 
 #### Features:
 * automated PID stabilization for roll pitch and yaw axes 
@@ -7,40 +11,24 @@ A from scratch quadcopter build with an Arduino programmed as a flight controlle
 * joystick throttle mapped directly to motor speed
 * arduino uno as flight controller with roughly 0.05 second loop time
 
-## Circuit Diagram
+### Why Drones?
+I find drones to be the perfect engineering challenge because they require knowledge from a range of disciplines including physics, electrical engineering, computer science, and math. 
+This drone project also provided me experience developing embedded software for a real-time application, designing and constructing circuits and electrical hardware, and implementing an algorithm based on control theory mathematics. Not only are drones a great engineering challenge but they also have innumerous real world applications including in disaster relief, law enforcement, agriculture, and war. 
+
+### The basics of quadcopter flight
+
+### Circuit Diagram
 <p align="center">
-<img src="/images/fritzing.jpg" width="100%"/>
+<img src="/images/fritzing.jpg" width="80%"/>
 </p>
 
-
-## Code explanation 
+### Code explanation 
 The arduino runs a continuous loop with the same main functions called each time the loop executes.
 <p align="center">
-<img src="/images/mainLoop1.jpg" width="300"/>
+<img src="/images/mainLoop1.jpg" width="350"/>
 </p>
 
-
-#### Why I'm interested in drones
-I've really enjoyed this project because it exposed me to several different interesting areas of science and engineering. Drones rely on physics, electrical engineering, computer science, and math in order to fly. I got experience developing embedded software for a real-time application.
-
-
-* Physics: to understand the forces acting on the drone in flight
-* Electrical engineering: circuit design and construction
-* Embedded software development: programming on a resource constrained microcontroller 
-* Real time programming: programming where the timing of the program is crucial
-* Control theory: understanding how to optimize the control algorithm using mathematical techniques from control theory 
-* Wireless communication: understanding the transfer of information from the RC transmitter to the reciever
-
-
-All of this requires a healthy amount of math
-
-Real world applications for drones
-Disaster relief 
-Law enforcement
-War
-Agriculture
-
-
+### PID tuning 
 
 ### Next Steps:
 * add altitude control 
@@ -50,11 +38,6 @@ Agriculture
 ### Design flaws 
 * maybe wires were too long 
 
-
-### Basics of Drone flight 
-
-### PID tuning 
-### Fritzing diagram
 ### Photos of construction
 
 <p align="center">
