@@ -7,7 +7,7 @@ A custom quadcopter build with an Arduino Uno flight controller.
 </h5>
 
 <p align="center">
-<img src="/images/flightTests/test2.gif" width="370"/>
+<img src="/images/flightTests/flightPhoto.jpg" width="370"/>
 </p>
 
 
