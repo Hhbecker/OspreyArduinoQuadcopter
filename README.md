@@ -7,7 +7,7 @@ A custom quadcopter build with an Arduino Uno flight controller.
 </h5>
 
 <p align="center">
-<img src="/images/flightTests/test2.gif" width="380"/>
+<img src="/images/flightTests/test2.gif" width="370"/>
 </p>
 
 
@@ -48,7 +48,7 @@ The arduino runs a continuous loop with the same main functions called each time
 </p>
 
 ### The Control Algorithm
-Control theory is a branch of applied mathematics that deals with the use of feedback to influence the behaviour of a system in order to achieve a desired goal (source 1). In the case of drone flight, the current rotation about each axis must be "fed-back" into the control algorithm and used to determine how much the motor speeds should change to achieve the desired rotation set by the joysticks.
+Control theory is a branch of applied mathematics that deals with the use of feedback to influence the behaviour of a system in order to achieve a desired goal. In the case of drone flight, the current rotation about each axis must be "fed-back" into the control algorithm and used to determine how much the motor speeds should change to achieve the desired rotation set by the joysticks.
 
 The method of feedback control used in the Osprey Flight Controller is known as PID Control. PID control is one of the most common control algorithms used in industry because it is simple to understand and implement yet still provides robust performance. PID algorithms consists of three basic coefficients; proportional, integral and derivative which are varied or "tuned" to get the optimal response. 
 
@@ -122,7 +122,7 @@ The MPU6050 accelerometer measures linear acceleration along the X, Y, and Z axe
 
 Every timestep the angular rate reading is integrated with respect to time producing an angular position estimate. This angular position estimate is then combined with the accelerometer based angular position estimate using a low pass?) filter.
 
-### timestep 
+### Component Timing
 UNDER CONSTRUCTION
 Arduino runs at clock cycle of ____ mpu6050 reciever servo board esc motor. 
 
@@ -140,9 +140,12 @@ Although it's recommended to keep the timestep constant i needed to use delay() 
 
 </br>
 
-### Flight Test
+<h3 align="center">
+The Osprey Mark I in Action 
+</h3>
+
 <p align="center">
-<img src="/images/flightTests/test2.gif" width="380"/>
+<img src="/images/flightTests/test2.gif" width="370"/>
 </p>
 
 ### Parts List
@@ -154,10 +157,10 @@ Although it's recommended to keep the timestep constant i needed to use delay() 
 * Readytosky 2300KV brushless DC motor - x4
 * FlySky I6x Transmitter and Reciever - x1
 * Zeee 11.1V 120C 1500mAh 3s Lithium Polymer Battery - x1
-* Usmile 250mm carbon fiber FPV quadcopter frame
+* Usmile 250mm carbon fiber FPV quadcopter frame - x1
 * GEMFAN 5 inch propellor 3 blades - x1
-* AstroAI Digital Multimeter  
-* HTRC 2S-3S LiPo Balance Battery Charger 
+* AstroAI Digital Multimeter - x1
+* HTRC 2S-3S LiPo Balance Battery Charger - x1
 
 ### Next Steps
 Software improvements:
@@ -170,9 +173,4 @@ Hardware improvements:
 * Replace Arduino Uno with multiple Arduino Nanos
 * Minimize length of all wires
 * Design an outer shell to protect electrical components
-
-### Sources
-
-1. https://uwaterloo.ca/applied-mathematics/future-undergraduates/what-you-can-learn-applied-mathematics/control-theory
-
 
