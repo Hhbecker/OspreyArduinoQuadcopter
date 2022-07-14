@@ -88,6 +88,7 @@ So, to recap, basic idea behind a PID controller is to 1. Read a sensor, 2. Comp
 ##### PID Tuning
 A flawless flight controller still will not fly without reasonable gains. Testing the overall function of the drone and tuning the gains in a safe and controlled environment before attemtping to fly is the smart approach to drone development (I learned the hard way). To safely tune the gains I built a simple test rig shown below. The roll, pitch, and yaw axes must be tested and tuned individually. For each axis, the center of rotation on the test rig should be located directly through the center of gravity of the drone to best simulate flight.
 
+<br/>
 
 <p align="center">
 <img src="/images/dronePictures/testRig.jpg" height="350"/>
@@ -97,9 +98,10 @@ A flawless flight controller still will not fly without reasonable gains. Testin
 <p align="center">
 <b>Left: handmade roll and pitch test rig. Right: graph of PID output during roll test.</b>
 </p>
+<br/>
 
 ##### The Ziegler Nicols Method
-1. Balance weight, motor thrustn and motor torques along each axis so that the drone remains level in the absence of perturbations. 
+1. Balance weight, motor thrusts, and motor torques along each axis so the drone remains level on the test rig in the absence of perturbations. 
 2. Add the proportional term and tune the gain to achieve even, steady oscillations when perturbed. 
 4. Add the derivative term and tune the gain to remove overshoot. 
 5. Add the integral term and tune the gain to compensate for any steady state error.
