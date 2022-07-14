@@ -66,9 +66,16 @@ This error term is then passed into the PID controller. Inside the PID controlle
 </p>
 
 
-In this case, because the drone is rolling to the left we would expect our PID controller to reduce the power to the motors on the right and increase the power to the motors on the left. 
+In this case, because the drone is rolling to the left we would expect our PID controller to reduce the power to the motors on the right and increase the power to the motors on the left. How do the proportional, integral, and derivative term each manipulaate the error to affect the controller output?
 
+Proportional term
+As you might expect the proportional term grows proportionally with the size of the error term.
 
+Integral term
+The integral term is the integration of the error over time. So as long as the error is nonzero, the integral term will grow in magnitude. not exactly grow always
+
+Derivative term
+The derivative term takes into account the rate of change of the error term. The derivative term is sometimes called the damping term because it resists high rates of chaange If the error is rapidly incre
 
 
 
@@ -83,7 +90,7 @@ The Osprey Flight Controller incorporates gyroscope and accelerometer data to ac
 ### Code Walkthrough 
 The arduino runs a continuous loop with the same main functions called each time the loop executes.
 <p align="center">
-<img src="/images/mainLoop1.jpg" width="350"/>
+<img src="/images/code.jpg" width="350"/>
 </p>
 
 ### PID tuning 
