@@ -11,23 +11,23 @@ A custom quadcopter build with an Arduino Uno flight controller.
 </p>
 
 
-#### Features:
+### Features:
 * Automated PID stabilization for roll pitch and yaw axes 
 * Joystick control of roll pitch and yaw axes 
 * Joystick throttle mapped directly to motor power
 * Roughly 20Hz flight controller refresh rate
 
-## Why Drones?
+### Why Drones?
 I see drones as the perfect engineering challenge because they require knowledge from a range of disciplines including physics, electrical engineering, computer science, and math. 
 This drone project also provided me experience developing embedded software for a real-time application, designing and constructing circuits and electrical hardware, and implementing an algorithm based on control theory mathematics. Not only are drones a great engineering challenge but they also have innumerous real world applications including in disaster relief, law enforcement, agriculture, and war. 
 
-## Circuit Diagram
+### Circuit Diagram
 <p align="center">
 
 <img src="/images/fritzing.jpg" width="75%"/>
 </p>
 
-## The basics of quadcopter flight
+### The basics of quadcopter flight
 A drone has three axes of rotation: roll, pitch, and yaw. The primary goal of the Osprey Flight Controller V1.0 is to maintain stability in flight by continously adjusting the speed of each individual motor in order to abruptly and accurately correct any unwanted rotation about any of the three axes.
 
 <p align="center">
@@ -89,6 +89,7 @@ So, to recap, basic idea behind a PID controller is to 1. Read a sensor, 2. Comp
 A flawless flight controller still will not fly without reasonable gains. Testing the overall function of the drone and tuning the gains in a safe and controlled environment before attemtping to fly is the smart approach to drone development (I learned the hard way). To safely tune the gains I built a simple test rig shown below. The roll, pitch, and yaw axes must be tested and tuned individually. For each axis, the center of rotation on the test rig should be located directly through the center of gravity of the drone to best simulate flight.
 
 <p align="center">
+
 <img src="/images/dronePictures/testRig.jpg" height="350"/>
 <img src="/images/graph.jpg" height="350"/>
 </p>
@@ -108,9 +109,8 @@ A flawless flight controller still will not fly without reasonable gains. Testin
 The Osprey Flight Controller incorporates gyroscope and accelerometer data from the MPU6050 inertial measurement unit to achieve a 3 degrees of freedom attitude estimation about the roll, pitch, and yaw axes. 
 
 <p align="center">
-<img src="/images/mpu.jpg" width="300"/>
+<img src="/images/mpu.jpg" width="200"/>
 </p>
-
 <p align="center">
 <b>An MPU6050 inertial measurement unit.</b>
 </p>
@@ -127,10 +127,10 @@ Every timestep the angular rate reading is integrated with respect to time produ
 
 ### Construction Process
 <p align="center">
-<img src="/images/dronePictures/build1.jpg" height="350"/>
-<img src="/images/dronePictures/build2.jpg" height="350"/>
-<img src="/images/dronePictures/build3.jpg" height="350"/>
-<img src="/images/dronePictures/finished4.jpg" height="350"/>
+<img src="/images/dronePictures/build1.jpg" height="330"/>
+<img src="/images/dronePictures/build2.jpg" height="330"/>
+<img src="/images/dronePictures/build3.jpg" height="330"/>
+<img src="/images/dronePictures/finished4.jpg" height="330"/>
 </p>
 
 <p align="center">
