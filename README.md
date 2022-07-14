@@ -15,7 +15,7 @@ A custom quadcopter build with an Arduino Uno flight controller.
 #### Features:
 * Automated PID stabilization for roll pitch and yaw axes 
 * Joystick control of roll pitch and yaw axes 
-* Joystick throttle mapped directly to motor speed
+* Joystick throttle mapped directly to motor power
 * Roughly 20Hz flight controller refresh rate
 
 ### Why Drones?
@@ -35,20 +35,46 @@ A drone has three axes of rotation: roll, pitch, and yaw. The primary goal of th
 </p>
 
 <p align="center">
-<b>Vizualization of the three axes of rotation.</b>
+<b>Vizualization of the three axes of rotation. Y = roll, X = pitch, and Z = yaw.</b>
 </p>
 
-The onboard accelerometer and gyroscope are used to calculate the rotation of the drone along these three axes in real time. The actual rotation is fed into the control algorithm to calculate the new motor speeds necessary to correct for the current unwanted rotation. The flight controller algorithm runs in a simple loop making these corrections continously throughout the duration of the flight.
-
-The stability of the drone is ultimately a function of how quickly the motors adjust there speed. This timestep is influenced by the speed of the code itself and also the speed and performance of every component in the drone from the battery to the ESCs. Of course, you could have the fastest flight controller in the world but if the ESC only refreshes the motor speed twice every second your drone will not fly.
+The onboard accelerometer and gyroscope are used to calculate the rotation of the drone along these three axes in real time. The actual rotation is fed into the control algorithm to calculate the new motor speeds necessary to correct for the current unwanted rotation. The flight controller algorithm runs in a simple loop making these corrections continously throughout the duration of the flight. The stability of the drone is ultimately a function of how quickly corrections are calculated and implemented by the motors. Each component on the drone plays a role in accomplishing this task.
 
 ### The Control Algorithm
 Control theory is a branch of Applied Mathematics that deals with the use of feedback to influence the behaviour of a system in order to achieve a desired goal (source 1). In the case of drone flight, the current rotation about each axis must be "fed-back" into the control algorithm and used to determine how much the motor speeds should change to achieve the desired rotation set by the joysticks.
 
-One common method of feedback control is known as PID Control. PID control...
+The method of feedback control used in the Osprey Flight Controller is known as PID Control. PID control is one of the most common control algorithms used in industry because it is simple to understand and implement yet still provides robust performance. As the name suggests, PID algorithms consists of three basic coefficients; proportional, integral and derivative which are varied or "tuned" to get the optimal response. 
 
-blah blah blah
+To better understand PID control lets use the roll axis of the osprey drone as an example. As previously discussed, the flight controller calculates the drones attitude about the roll axis and compares the current rotation to the desired rotation set by the joystick. Let's say the desired roll is zero degrees but a gust of wind induces a roll of 30º. The error term (the difference between the current and desired rotation) is now 30º.
 
+<p align="center">
+<img src="/images/roll.jpg" width="300"/>
+</p>
+
+<p align="center">
+<b>Drone rolling 30º resulting in an error term of 30.</b>
+</p>
+
+This error term is then passed into the PID controller. Inside the PID controller a proportional, integral, and derivative response to this error term are calculated separately and finally summed together. The sum of the proportional, integral, and derivative response to the error term is the output of the controller which is used to calculate the new motor speeds.  
+
+<p align="center">
+<img src="/images/pid.jpg" width="300"/>
+</p>
+
+<p align="center">
+<b>The structure of a PID controller showing the error term passed through the proportional, integral, and derivative paths.</b>
+</p>
+
+
+In this case, because the drone is rolling to the left we would expect our PID controller to reduce the power to the motors on the right and increase the power to the motors on the left. 
+
+
+
+
+
+So, to recap, basic idea behind a PID controller is to read a sensor, compute the difference between the sensor reading and the desired setpoint, compute the desired change in motor power by calculating proportional, integral, and derivative responses and summing those three components to compute the controller output. 
+
+Closed loop system vs open loop system
 
 ### State Estimation 
 The Osprey Flight Controller incorporates gyroscope and accelerometer data to achieve a 3 degrees of freedom attitude estimation about the roll, pitch, and yaw axes. 
