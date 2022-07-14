@@ -74,18 +74,18 @@ This error term is then passed into the PID controller. Inside the PID controlle
 
  In this case, because the drone is rolling to the left we would expect our PID controller to reduce the power to the motors on the right and increase the power to the motors on the left. How do the proportional, integral, and derivative term each respond to the error to affect the controller output?
 
-##### Proportional term
+#### Proportional term
 As you might expect, the proportional term grows proportionally with the size of the error term. A larger error will result in a larger absolute contribution from the proportional term to the controller output. 
 
-##### Integral term
+#### Integral term
 The integral term is the integration of the error over time. With every execution of the loop, the current error is added to the sum of all past errors. The integral term often helps to overcome small errors because when the error is small in magnitude the proprotional term is also small and the contribution of the proportional term alone may not be enough to correct the error.
 
-##### Derivative term
+#### Derivative term
 The derivative term takes into account the rate of change of the error term. The derivative term is sometimes called the damping term because its primary responsibility is to prevent the system from overcorrecting due to the contribution of the proportional term. The derivative term is constrained by its tendency to amplify sensor noise. If the derivative gain is too high the system will lose stability because the derivative term will erroneously correct for sensor noise. 
 
 So, to recap, basic idea behind a PID controller is to 1. Read a sensor, 2. Compute the difference between the sensor reading and the desired setpoint, and 3. Compute the desired change in motor power by calculating a proportional, integral, and derivative response to the error. 
 
-##### PID Tuning
+#### PID Tuning
 A flawless flight controller still will not fly without reasonable gains. Testing the overall function of the drone and tuning the gains in a safe and controlled environment before attemtping to fly is the smart approach to drone development (I learned the hard way). To safely tune the gains I built a simple test rig shown below. The roll, pitch, and yaw axes must be tested and tuned individually. For each axis, the center of rotation on the test rig should be located directly through the center of gravity of the drone to best simulate flight.
 
 <br/>
@@ -98,9 +98,9 @@ A flawless flight controller still will not fly without reasonable gains. Testin
 <p align="center">
 <b>Left: handmade roll and pitch test rig. Right: graph of PID output during roll test.</b>
 </p>
-<br/>
 
-##### The Ziegler Nicols Method
+
+#### The Ziegler Nicols Method
 1. Balance weight, motor thrusts, and motor torques along each axis so the drone remains level on the test rig in the absence of perturbations. 
 2. Add the proportional term and tune the gain to achieve even, steady oscillations when perturbed. 
 4. Add the derivative term and tune the gain to remove overshoot. 
