@@ -10,8 +10,6 @@ A custom quadcopter build with an Arduino Uno flight controller.
 <img src="/images/flightTests/flightPhoto.jpg" width="350"/>
 </p>
 
-Mark 2 needs a well thought out software and hardware kill switch
-
 
 #### Features:
 * Automated PID stabilization for roll pitch and yaw axes 
@@ -24,8 +22,8 @@ I see drones as the perfect engineering challenge because they require knowledge
 This drone project also provided me experience developing embedded software for a real-time application, designing and constructing circuits and electrical hardware, and implementing an algorithm based on control theory mathematics. Not only are drones a great engineering challenge but they also have innumerous real world applications including in disaster relief, law enforcement, agriculture, and war. 
 
 ### Circuit Diagram
-
 <p align="center">
+
 <img src="/images/fritzing.jpg" width="75%"/>
 </p>
 
@@ -46,7 +44,7 @@ The onboard accelerometer and gyroscope are used to calculate the rotation of th
 The arduino runs a continuous loop with the same main functions called each time the loop executes. The diagram below shows the main loop functions in the order of their execution. This code is pulled directly from the main loop of the Osprey Flight Controller V1.0.
 
 <p align="center">
-<img src="/images/code.jpg" width="600"/>
+<img src="/images/code.jpg" width="800"/>
 </p>
 
 ### The Control Algorithm
@@ -87,22 +85,19 @@ The derivative term takes into account the rate of change of the error term. The
 
 So, to recap, basic idea behind a PID controller is to 1. Read a sensor, 2. Compute the difference between the sensor reading and the desired setpoint, and 3. Compute the desired change in motor power by calculating a proportional, integral, and derivative response to the error. 
 
-Closed loop system vs open loop system?
-
-
 ##### PID Tuning
-A flawless flight controller still will not fly without reasonable gains. Testing the overall function of the drone and tuning the gains in a safe and controlled environment before attemtping to fly is the smart approach to drone development (I learned the hard way). To safely tune the gains I built a simple test rig shown below. The roll, pitch, and yaw axes must be tested and tuned individually. For each axis make sure the center of rotation on the test rig is directly through the center of gravity of the drone to best simulate flight.
+A flawless flight controller still will not fly without reasonable gains. Testing the overall function of the drone and tuning the gains in a safe and controlled environment before attemtping to fly is the smart approach to drone development (I learned the hard way). To safely tune the gains I built a simple test rig shown below. The roll, pitch, and yaw axes must be tested and tuned individually. For each axis, the center of rotation on the test rig should be located directly through the center of gravity of the drone to best simulate flight.
 
 <p align="center">
-<img src="/images/dronePictures/testRig.jpg" width="300"/>
-<img src="/images/graph.jpg" width="300"/>
+<img src="/images/dronePictures/testRig.jpg" height="400"/>
+<img src="/images/graph.jpg" height="400"/>
 </p>
 
 <p align="center">
 <b>Left: handmade roll and pitch test rig. Right: graph of PID output during roll test.</b>
 </p>
 
-The Ziegler Nicols Method
+##### The Ziegler Nicols Method
 1. Balance weight, motor thrustn and motor torques along each axis so that the drone remains level in the absence of perturbations. 
 2. Add the proportional term and tune the gain to achieve even, steady oscillations when perturbed. 
 4. Add the derivative term and tune the gain to remove overshoot. 
@@ -113,7 +108,7 @@ The Ziegler Nicols Method
 The Osprey Flight Controller incorporates gyroscope and accelerometer data from the MPU6050 inertial measurement unit to achieve a 3 degrees of freedom attitude estimation about the roll, pitch, and yaw axes. 
 
 <p align="center">
-<img src="/images/mpu.jpg" width="600"/>
+<img src="/images/mpu.jpg" width="300"/>
 </p>
 
 The MPU6050 is an I2C running on 3.3v from the 3.3v pin on the arduino. 
@@ -139,10 +134,10 @@ Hardware improvements:
 
 ### Construction Process
 <p align="center">
-<img src="/images/dronePictures/build1.jpg" width="400"/>
-<img src="/images/dronePictures/build2.jpg" width="300"/>
-<img src="/images/dronePictures/build3.jpg" width="300"/>
-<img src="/images/dronePictures/finished4.jpg" width="400"/>
+<img src="/images/dronePictures/build1.jpg" height="400"/>
+<img src="/images/dronePictures/build2.jpg" height="400"/>
+<img src="/images/dronePictures/build3.jpg" height="400"/>
+<img src="/images/dronePictures/finished4.jpg" height="400"/>
 </p>
 
 <p align="center">
