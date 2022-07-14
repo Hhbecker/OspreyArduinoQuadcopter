@@ -17,17 +17,17 @@ A custom quadcopter build with an Arduino Uno flight controller.
 * Joystick throttle mapped directly to motor power
 * Roughly 20Hz flight controller refresh rate
 
-### Why Drones?
+## Why Drones?
 I see drones as the perfect engineering challenge because they require knowledge from a range of disciplines including physics, electrical engineering, computer science, and math. 
 This drone project also provided me experience developing embedded software for a real-time application, designing and constructing circuits and electrical hardware, and implementing an algorithm based on control theory mathematics. Not only are drones a great engineering challenge but they also have innumerous real world applications including in disaster relief, law enforcement, agriculture, and war. 
 
-### Circuit Diagram
+## Circuit Diagram
 <p align="center">
 
 <img src="/images/fritzing.jpg" width="75%"/>
 </p>
 
-### The basics of quadcopter flight
+## The basics of quadcopter flight
 A drone has three axes of rotation: roll, pitch, and yaw. The primary goal of the Osprey Flight Controller V1.0 is to maintain stability in flight by continously adjusting the speed of each individual motor in order to abruptly and accurately correct any unwanted rotation about any of the three axes.
 
 <p align="center">
@@ -44,11 +44,11 @@ The onboard accelerometer and gyroscope are used to calculate the rotation of th
 The arduino runs a continuous loop with the same main functions called each time the loop executes. The diagram below shows the main loop functions in the order of their execution. This code is pulled directly from the main loop of the Osprey Flight Controller V1.0.
 
 <p align="center">
-<img src="/images/code.jpg" width="800"/>
+<img src="/images/code.jpg" width="100%"/>
 </p>
 
 ### The Control Algorithm
-Control theory is a branch of Applied Mathematics that deals with the use of feedback to influence the behaviour of a system in order to achieve a desired goal (source 1). In the case of drone flight, the current rotation about each axis must be "fed-back" into the control algorithm and used to determine how much the motor speeds should change to achieve the desired rotation set by the joysticks.
+Control theory is a branch of applied mathematics that deals with the use of feedback to influence the behaviour of a system in order to achieve a desired goal (source 1). In the case of drone flight, the current rotation about each axis must be "fed-back" into the control algorithm and used to determine how much the motor speeds should change to achieve the desired rotation set by the joysticks.
 
 The method of feedback control used in the Osprey Flight Controller is known as PID Control. PID control is one of the most common control algorithms used in industry because it is simple to understand and implement yet still provides robust performance. PID algorithms consists of three basic coefficients; proportional, integral and derivative which are varied or "tuned" to get the optimal response. 
 
@@ -89,8 +89,8 @@ So, to recap, basic idea behind a PID controller is to 1. Read a sensor, 2. Comp
 A flawless flight controller still will not fly without reasonable gains. Testing the overall function of the drone and tuning the gains in a safe and controlled environment before attemtping to fly is the smart approach to drone development (I learned the hard way). To safely tune the gains I built a simple test rig shown below. The roll, pitch, and yaw axes must be tested and tuned individually. For each axis, the center of rotation on the test rig should be located directly through the center of gravity of the drone to best simulate flight.
 
 <p align="center">
-<img src="/images/dronePictures/testRig.jpg" height="400"/>
-<img src="/images/graph.jpg" height="400"/>
+<img src="/images/dronePictures/testRig.jpg" height="350"/>
+<img src="/images/graph.jpg" height="350"/>
 </p>
 
 <p align="center">
@@ -111,6 +111,10 @@ The Osprey Flight Controller incorporates gyroscope and accelerometer data from 
 <img src="/images/mpu.jpg" width="300"/>
 </p>
 
+<p align="center">
+<b>An MPU6050 inertial measurement unit.</b>
+</p>
+
 The MPU6050 is an I2C running on 3.3v from the 3.3v pin on the arduino. 
 
 The accelerometer measures linear acceleration along the X, Y, and Z axes.
@@ -121,23 +125,12 @@ The gyroscope measures angular rate along the X, Y, and Z axes.
 
 Every timestep the angular rate reading is integrated with respect to time producing an angular position estimate. This angular position estimate is then combined with the accelerometer based angular position estimate using a high pass (low pass?) filter.
 
-### Next Steps:
-Software improvements:
-* Decrease flight controller refresh rate 
-* Add altitude controller for hover
-* Add translation controller to prevent wind drift 
-
-Hardware improvements:
-* Replace Arduino Uno with multiple Arduino Nanos
-* Minimize length of all wires
-* Design an outer shell to protect electrical components
-
 ### Construction Process
 <p align="center">
-<img src="/images/dronePictures/build1.jpg" height="400"/>
-<img src="/images/dronePictures/build2.jpg" height="400"/>
-<img src="/images/dronePictures/build3.jpg" height="400"/>
-<img src="/images/dronePictures/finished4.jpg" height="400"/>
+<img src="/images/dronePictures/build1.jpg" height="350"/>
+<img src="/images/dronePictures/build2.jpg" height="350"/>
+<img src="/images/dronePictures/build3.jpg" height="350"/>
+<img src="/images/dronePictures/finished4.jpg" height="350"/>
 </p>
 
 <p align="center">
@@ -175,6 +168,17 @@ Image:
 Part: name
 Specs:
 Include tiny pic and refresh rate of each part 
+
+### Next Steps
+Software improvements:
+* Decrease flight controller refresh rate 
+* Add altitude controller for hover
+* Add translation controller to prevent wind drift 
+
+Hardware improvements:
+* Replace Arduino Uno with multiple Arduino Nanos
+* Minimize length of all wires
+* Design an outer shell to protect electrical components
 
 
 ### Sources
