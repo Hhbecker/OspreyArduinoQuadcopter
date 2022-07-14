@@ -27,7 +27,7 @@ This drone project also provided me experience developing embedded software for 
 <img src="/images/fritzing.jpg" width="75%"/>
 </p>
 
-### The basics of quadcopter flight
+### The Basics of Quadcopter Flight
 A drone has three axes of rotation: roll, pitch, and yaw. The primary goal of the Osprey Flight Controller V1.0 is to maintain stability in flight by continously adjusting the speed of each individual motor in order to abruptly and accurately correct any unwanted rotation about any of the three axes.
 
 <p align="center">
