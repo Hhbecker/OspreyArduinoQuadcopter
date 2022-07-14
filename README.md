@@ -58,7 +58,7 @@ To better understand PID control lets use the roll axis of the osprey drone as a
 This error term is then passed into the PID controller. Inside the PID controller a proportional, integral, and derivative response to this error term are calculated separately and finally summed together. The sum of the proportional, integral, and derivative response to the error term is the output of the controller which is used to calculate the new motor speeds.  
 
 <p align="center">
-<img src="/images/pid.jpg" width="300"/>
+<img src="/images/pid.jpg" width="400"/>
 </p>
 
 <p align="center">
