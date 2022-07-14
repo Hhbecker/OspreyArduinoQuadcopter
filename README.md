@@ -7,7 +7,7 @@ A custom quadcopter build with an Arduino Uno flight controller.
 </h5>
 
 <p align="center">
-<img src="/images/flightTests/flightPhoto.jpg" width="350"/>
+<img src="/images/flightTests/test2.gif" width="380"/>
 </p>
 
 
@@ -108,6 +108,7 @@ A flawless flight controller still will not fly without reasonable gains. Testin
 
 
 ### State Estimation 
+UNDER CONSTRUCTION
 The Osprey Flight Controller incorporates gyroscope and accelerometer data from the MPU6050 inertial measurement unit to achieve a 3 degrees of freedom attitude estimation about the roll, pitch, and yaw axes. The MPU6050 is a low budget, low power 6-axis microelectromechanical inertial measuremnt unit that can easily interface with Arduino using the I2C protocol. 
 
 <p align="center">
@@ -121,12 +122,20 @@ The MPU6050 accelerometer measures linear acceleration along the X, Y, and Z axe
 
 Every timestep the angular rate reading is integrated with respect to time producing an angular position estimate. This angular position estimate is then combined with the accelerometer based angular position estimate using a low pass?) filter.
 
+### timestep 
+UNDER CONSTRUCTION
+Arduino runs at clock cycle of ____ mpu6050 reciever servo board esc motor. 
+
+Although it's recommended to keep the timestep constant i needed to use delay() to do that and I didn't want to. 
+
+
+
 ### Construction Process
 <p align="center">
-<img src="/images/dronePictures/build1.jpg" height="310"/>
-<img src="/images/dronePictures/build2.jpg" height="310"/>
-<img src="/images/dronePictures/build3.jpg" height="310"/>
-<img src="/images/dronePictures/finished4.jpg" height="310"/>
+<img src="/images/dronePictures/build1.jpg" height="300"/>
+<img src="/images/dronePictures/build2.jpg" height="300"/>
+<img src="/images/dronePictures/build3.jpg" height="300"/>
+<img src="/images/dronePictures/finished4.jpg" height="300"/>
 </p>
 
 </br>
@@ -137,36 +146,18 @@ Every timestep the angular rate reading is integrated with respect to time produ
 </p>
 
 ### Parts List
-
-Arduino Uno 
-
-MPU6050
-
-Servo control board
-
-Power Distribution board 
-
-ESCs
-
-Motors 
-
-FlySky I6x Transmitter and Reciever
-
-Zeee 3s 1500 Mah Lithium Polymer battery
-
-Air frame 
-
-Propellors 
-
-Battery charger 
-
-Multimeter 
-
-
-Image:
-Part: name
-Specs:
-Include tiny pic and refresh rate of each part 
+* Elegoo Uno R3 - x1
+* HiLetgo MPU6050 - x1
+* HiLetgo Servo Control Board PCA9685 - x1
+* Matek Power Distribution Board 5V and 12V - x1
+* Hobbypower SimonK 30A ESC - x4
+* Readytosky 2300KV brushless DC motor - x4
+* FlySky I6x Transmitter and Reciever - x1
+* Zeee 11.1V 120C 1500mAh 3s Lithium Polymer Battery - x1
+* Usmile 250mm carbon fiber FPV quadcopter frame
+* GEMFAN 5 inch propellor 3 blades - x1
+* AstroAI Digital Multimeter  
+* HTRC 2S-3S LiPo Balance Battery Charger 
 
 ### Next Steps
 Software improvements:
@@ -179,7 +170,6 @@ Hardware improvements:
 * Replace Arduino Uno with multiple Arduino Nanos
 * Minimize length of all wires
 * Design an outer shell to protect electrical components
-
 
 ### Sources
 
