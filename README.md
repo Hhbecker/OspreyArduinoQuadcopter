@@ -88,8 +88,8 @@ So, to recap, basic idea behind a PID controller is to 1. Read a sensor, 2. Comp
 ##### PID Tuning
 A flawless flight controller still will not fly without reasonable gains. Testing the overall function of the drone and tuning the gains in a safe and controlled environment before attemtping to fly is the smart approach to drone development (I learned the hard way). To safely tune the gains I built a simple test rig shown below. The roll, pitch, and yaw axes must be tested and tuned individually. For each axis, the center of rotation on the test rig should be located directly through the center of gravity of the drone to best simulate flight.
 
-<p align="center">
 
+<p align="center">
 <img src="/images/dronePictures/testRig.jpg" height="350"/>
 <img src="/images/graph.jpg" height="350"/>
 </p>
