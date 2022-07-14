@@ -24,7 +24,7 @@ This drone project also provided me experience developing embedded software for 
 
 ### Circuit Diagram
 <p align="center">
-<img src="/images/fritzing.jpg" width="80%"/>
+<img src="/images/fritzing.jpg" width="75%"/>
 </p>
 
 ### The basics of quadcopter flight
@@ -87,10 +87,11 @@ Closed loop system vs open loop system
 The Osprey Flight Controller incorporates gyroscope and accelerometer data to achieve a 3 degrees of freedom attitude estimation about the roll, pitch, and yaw axes. 
 
 
-### Code Walkthrough 
-The arduino runs a continuous loop with the same main functions called each time the loop executes.
+### Code Structure 
+The arduino runs a continuous loop with the same main functions called each time the loop executes. The diagram below shows the main loop functions in the order of their execution. This code is pulled directly from the main loop of the Osprey Flight Controller V1.0.
+
 <p align="center">
-<img src="/images/code.jpg" width="350"/>
+<img src="/images/code.jpg" width="600"/>
 </p>
 
 ### PID tuning 
