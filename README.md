@@ -86,7 +86,7 @@ The derivative term takes into account the rate of change of the error term. The
 So, to recap, basic idea behind a PID controller is to 1. Read a sensor, 2. Compute the difference between the sensor reading and the desired setpoint, and 3. Compute the desired change in motor power by calculating a proportional, integral, and derivative response to the error. 
 
 #### PID Tuning
-A flawless flight controller still will not fly without reasonable gains. Testing the overall function of the drone and tuning the gains in a safe and controlled environment before attemtping to fly is the smart approach to drone development (I learned the hard way). To safely tune the gains I built a simple test rig shown below. The roll, pitch, and yaw axes must be tested and tuned individually. For each axis, the center of rotation on the test rig should be located directly through the center of gravity of the drone to best simulate flight.
+A flawless flight controller still will not fly without reasonable gains. Testing the overall function of the drone and tuning the gains in a safe and controlled environment before attemtping to fly is the smart approach to drone development (I learned the hard way). To safely tune the gains I built a simple test rig shown below. The roll, pitch, and yaw axes must be tested and tuned individually. For each axis, the center of rotation on the test rig should be located directly through the center of gravity of the drone to best simulate flight. Balance weight, motor thrusts, and motor torques along each axis so the drone remains level on the test rig in the absence of perturbations before testing the PID controller.
 
 <br/>
 
@@ -100,15 +100,15 @@ A flawless flight controller still will not fly without reasonable gains. Testin
 </p>
 
 
-#### The Ziegler Nicols Method
-1. Balance weight, motor thrusts, and motor torques along each axis so the drone remains level on the test rig in the absence of perturbations. 
-2. Add the proportional term and tune the gain to achieve even, steady oscillations when perturbed. 
+#### The Ziegler Nichols Method
+1. Set integral and derivative gains to zero
+2. Tune the proportional gain to achieve even, steady oscillations when perturbed. 
 4. Add the derivative term and tune the gain to remove overshoot. 
 5. Add the integral term and tune the gain to compensate for any steady state error.
 
 
 ### State Estimation 
-The Osprey Flight Controller incorporates gyroscope and accelerometer data from the MPU6050 inertial measurement unit to achieve a 3 degrees of freedom attitude estimation about the roll, pitch, and yaw axes. 
+The Osprey Flight Controller incorporates gyroscope and accelerometer data from the MPU6050 inertial measurement unit to achieve a 3 degrees of freedom attitude estimation about the roll, pitch, and yaw axes. The MPU6050 is a low budget, low power 6-axis microelectromechanical inertial measuremnt unit that can easily interface with Arduino using the I2C protocol. 
 
 <p align="center">
 <img src="/images/mpu.jpg" width="200"/>
@@ -117,26 +117,23 @@ The Osprey Flight Controller incorporates gyroscope and accelerometer data from 
 <b>An MPU6050 inertial measurement unit.</b>
 </p>
 
-The MPU6050 is an I2C running on 3.3v from the 3.3v pin on the arduino. 
+The MPU6050 accelerometer measures linear acceleration along the X, Y, and Z axes. The angular position is calculated from each accelerometer linear acceleration reading using Euler angle based trigonometry. Korneliusz Jarzębski's MPU6050 library was used for the state estimation calculations. 
 
-The accelerometer measures linear acceleration along the X, Y, and Z axes.
-
-The angular position is calculated from each accelerometer linear acceleration reading using Euler angles. When the drone is upright and level, the vector of gravity points directly downward and trigonometry can be used to calculate the 
-
-The gyroscope measures angular rate along the X, Y, and Z axes.
-
-Every timestep the angular rate reading is integrated with respect to time producing an angular position estimate. This angular position estimate is then combined with the accelerometer based angular position estimate using a high pass (low pass?) filter.
+Every timestep the angular rate reading is integrated with respect to time producing an angular position estimate. This angular position estimate is then combined with the accelerometer based angular position estimate using a low pass?) filter.
 
 ### Construction Process
 <p align="center">
-<img src="/images/dronePictures/build1.jpg" height="330"/>
-<img src="/images/dronePictures/build2.jpg" height="330"/>
-<img src="/images/dronePictures/build3.jpg" height="330"/>
-<img src="/images/dronePictures/finished4.jpg" height="330"/>
+<img src="/images/dronePictures/build1.jpg" height="310"/>
+<img src="/images/dronePictures/build2.jpg" height="310"/>
+<img src="/images/dronePictures/build3.jpg" height="310"/>
+<img src="/images/dronePictures/finished4.jpg" height="310"/>
 </p>
 
+</br>
+
+### Flight Test
 <p align="center">
-<img src="/images/flightTests/test2.gif" width="400"/>
+<img src="/images/flightTests/test2.gif" width="380"/>
 </p>
 
 ### Parts List
@@ -176,6 +173,7 @@ Software improvements:
 * Decrease flight controller refresh rate 
 * Add altitude controller for hover
 * Add translation controller to prevent wind drift 
+* Represent state estimation using Quaternions instead of Euler Angles
 
 Hardware improvements:
 * Replace Arduino Uno with multiple Arduino Nanos
