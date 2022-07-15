@@ -3,7 +3,7 @@ The Osprey Drone Mark I with Osprey Flight Controller Version 1.0
 </h1>
 
 <h5 align="center">
-A custom quadcopter build with an Arduino Uno flight controller. 
+An Arduino based quadcopter build with personally developed flight control software. 
 </h5>
 
 <p align="center">
