@@ -132,10 +132,10 @@ Although it's recommended to keep the timestep constant i needed to use delay() 
 
 ### Construction Process
 <p align="center">
-<img src="/images/dronePictures/build1.jpg" height="300"/>
-<img src="/images/dronePictures/build2.jpg" height="300"/>
-<img src="/images/dronePictures/build3.jpg" height="300"/>
-<img src="/images/dronePictures/finished4.jpg" height="300"/>
+<img src="/images/dronePictures/build1.jpg" height="290"/>
+<img src="/images/dronePictures/build2.jpg" height="290"/>
+<img src="/images/dronePictures/build3.jpg" height="290"/>
+<img src="/images/dronePictures/finished4.jpg" height="290"/>
 </p>
 
 </br>
