@@ -31,7 +31,7 @@ This drone project also provided me experience developing embedded software for 
 A drone has three axes of rotation: roll, pitch, and yaw. The primary goal of the Osprey Flight Controller V1.0 is to maintain stability in flight by continously adjusting the speed of each individual motor in order to abruptly and accurately correct any unwanted rotation about any of the three axes.
 
 <p align="center">
-<img src="/images/rotation.jpg" width="300"/>
+<img src="/images/rotation.jpg" width="280"/>
 </p>
 
 <p align="center">
@@ -108,7 +108,6 @@ A flawless flight controller still will not fly without reasonable gains. Testin
 
 
 ### State Estimation 
-UNDER CONSTRUCTION
 The Osprey Flight Controller incorporates gyroscope and accelerometer data from the MPU6050 inertial measurement unit to achieve a 3 degrees of freedom attitude estimation about the roll, pitch, and yaw axes. The MPU6050 is a low budget, low power 6-axis microelectromechanical inertial measuremnt unit that can easily interface with Arduino using the I2C protocol. 
 
 <p align="center">
@@ -118,13 +117,21 @@ The Osprey Flight Controller incorporates gyroscope and accelerometer data from 
 <b>An MPU6050 inertial measurement unit.</b>
 </p>
 
-The MPU6050 accelerometer measures linear acceleration along the X, Y, and Z axes. The angular position is calculated from each accelerometer linear acceleration reading using Euler angle based trigonometry. Korneliusz Jarzębski's MPU6050 library was used for the state estimation calculations. 
-
-Every timestep the angular rate reading is integrated with respect to time producing an angular position estimate. This angular position estimate is then combined with the accelerometer based angular position estimate using a low pass?) filter.
+The MPU6050 accelerometer measures linear acceleration along the X, Y, and Z axes. The angular position is calculated from each accelerometer linear acceleration reading using Euler angle based trigonometry. Korneliusz Jarzębski's MPU6050 library was used to calculate the accelerometer and gyroscope based angular position calculations and these calculations were combined using a low pass filter for the accelerometer based state estimation and a high pass filter for the gyroscope based state estimation. 
 
 ### Component Timing
 UNDER CONSTRUCTION
-Arduino runs at clock cycle of ____ mpu6050 reciever servo board esc motor. 
+Arduino runs at clock cycle of 16KHz?
+
+MP6050 takes measurements every 15Khz?
+
+The reciever transmits signal every?
+
+the internal clock of the servo control board can be set to operate at a range of refresh rates from this to that
+
+The SimonK ESCs are capabale of a 400Hz refresh rate. 
+
+The motor
 
 Although it's recommended to keep the timestep constant i needed to use delay() to do that and I didn't want to. 
 
