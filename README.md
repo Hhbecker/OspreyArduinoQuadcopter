@@ -2,13 +2,15 @@
 The Osprey Drone Mark I with Osprey Flight Controller Version 1.0
 </h1>
 
-<h5 align="center">
-An Arduino based quadcopter build with personally developed flight control software. 
-</h5>
+
 
 <p align="center">
 <img src="/images/dronePictures/finished1.jpg" width="300"/>
 </p>
+
+<h5 align="center">
+An Arduino based quadcopter build with personally developed flight control software. 
+</h5>
 
 
 ### Features:
@@ -31,7 +33,7 @@ This drone project also provided me experience developing embedded software for 
 A drone has three axes of rotation: roll, pitch, and yaw. The primary goal of the Osprey Flight Controller V1.0 is to maintain stability in flight by continously adjusting the speed of each individual motor in order to abruptly and accurately correct any unwanted rotation about any of the three axes.
 
 <p align="center">
-<img src="/images/rotation.jpg" width="280"/>
+<img src="/images/rotation.jpg" width="270"/>
 </p>
 
 <p align="center">
@@ -133,7 +135,9 @@ The SimonK ESCs are capabale of a 400Hz refresh rate.
 
 The motor
 
-Although it's recommended to keep the timestep constant i needed to use delay() to do that and I didn't want to. 
+Although it's recommended to keep the timestep constant i needed to use delay() to do that and I didn't want to. I used a variable timestep.
+
+
 
 
 
