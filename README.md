@@ -43,7 +43,7 @@ The onboard accelerometer and gyroscope are used to calculate the rotation of th
 The arduino runs a continuous loop with the same main functions called each time the loop executes. The diagram below shows the main loop functions in the order of their execution. This code is pulled directly from the main loop of the Osprey Flight Controller V1.0.
 
 <p align="center">
-<img src="/images/code.jpg" width="100%"/>
+<img src="/images/code.jpg" width="90%"/>
 </p>
 
 ### The Control Algorithm
