@@ -7,7 +7,7 @@ The Osprey Drone Mark I with Osprey Flight Controller Version 1.0
 </p>
 
 <h5 align="center">
-An Arduino based quadcopter build with personally developed flight control software. 
+An Arduino based quadcopter build with personally developed flight control software
 </h5>
 
 ### Features:
@@ -116,29 +116,15 @@ The Osprey Flight Controller incorporates gyroscope and accelerometer data from 
 <b>An MPU6050 inertial measurement unit.</b>
 </p>
 
-The MPU6050 accelerometer measures linear acceleration along the X, Y, and Z axes. The angular position is calculated from each accelerometer linear acceleration reading using Euler angle based trigonometry. Korneliusz Jarzębski's MPU6050 library was used to calculate the accelerometer and gyroscope based angular position calculations and these calculations were combined using a low pass filter for the accelerometer based state estimation and a high pass filter for the gyroscope based state estimation. 
 
-### Component Timing
-The flight controller relies on several different hardware components as well as software to do its job. It's important to understand the time it takes to complete each part of the loop so that optimization efforts can focus on the biggest bottlenecks.
+The MPU6050 accelerometer measures linear acceleration along the X, Y, and Z axes. The angular position is calculated from each accelerometer linear acceleration reading using Euler angle based trigonometry. Only roll and pitch can be calculated with this method. This calculation relies on the vertical acceleration being -1G and assumes there is no other linear acceleration on the X and Y axes so during flight these calculations are often innacurate but at rest they will recenter any gyroscope drift. Kornelius Jarzębski's MPU6050 library was used to calculate the accelerometer and gyroscope based angular position calculations and these calculations were combined using a low pass filter for the accelerometer based state estimation and a high pass filter for the gyroscope based state estimation. 
 
-The timestep is often kept constant when integrating sensor data with respect to time. I chose to vary the time step to avoid using the delay() function which is a blocking function and slowed the overall loop time too much. The best solution would be to handle integration of the sensor data on a separate microcontroller to allow for a constant timestep without slowing down the entire flight controller. 
+### Flight Controller Timing
+The flight controller relies on several different hardware components as well as software to do its job. It's important to understand the time it takes to complete each part of the loop so that optimization efforts can focus on the biggest bottlenecks. Flight controller speed is crucial for stability. A slower flight controller loop time negatively affects stability because it decreases the accuracy of the state estimation and also does not give the motors as much time to adjust their speed. The default operating frequency for Arduino Uno R3 is 16 MHz. The average timestep (total loop time) of the Osprey Flight Controlller V1.0 is approximately 20Hz in Stabilize Mode. This is unfortunately far too slow to allow for the stability required to film or maneuver. Modern F4 flight controllers allow for incredibly smooth and aggresssive flight with loop times of 32KHz which is three orders of magnitude faster than the Osprey Flight Controller V1.0. 
 
-The default operating frequency for Arduino Uno R3 is 16 MHz. The average timestep (total loop time) of the Osprey Flight Controlller V1.0 is approximately 20Hz in Stabilize Mode. This is unfortunately far too slow to allow for the stability required to film or maneuver. Modern F4 flight controllers have loop times of 32KHz which is three orders of magnitude faster than the Osprey Flight Controller V1.0. 
+The MPU6050 has a maximum sample rate north of 1Hz but in this project the MPU6050 is only sampled once every loop. The timestep is often kept constant when integrating sensor data with respect to time. I chose to vary the time step to avoid using the delay() function which is a blocking function and slowed the overall loop time too much. The best solution would be to handle integration of the sensor data on a separate microcontroller to allow for a constant timestep without slowing down other flight controller tasks. 
 
-A slower flight controller loop time negatively affects stability because it decreases the accuracy of the state estimation and also does not give the motors as much time to adjust their speed. 
-
-the internal clock of the servo control board can be set to operate at a range of refresh rates from ______ to ______
-
-The SimonK ESCs are capabale of a 400Hz refresh rate and the motors are capable of responding to this refresh rate.
-
-How often do reciever pulses come in?
-What is the min and max pulse length and timeout time of the reciever and pulseIn() function?
-
-What is the MPU6050 sampling frequency
-The MPU6050 uses an interrupt 
-The MPU6050 samples onyl once a loop but you want it to sample as fast as possible and just use the current estimate in the control loop as fast as the loop allows. Sample the gyro as fast as the hardware allows and execute the control loop every nth gyro sampling.
-
-https://www.bestonlinedrones.com/should-your-miniquad-have-the-newest-flight-controller/
+The internal clock of the servo control board can be set to operate at a frequency of up to 1526Hz. I set the frequency to 400Hz for communication with the SimonK ESCs. The SimonK ESCs are capabale of a 400Hz refresh rate. The motors are lower end but are still capable of accelerating and decellerating quickly enough.
 
 ### Construction Process
 <p align="center">
