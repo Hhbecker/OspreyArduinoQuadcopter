@@ -37,7 +37,7 @@ A drone has three axes of rotation: roll, pitch, and yaw. The primary goal of th
 <b>Vizualization of the three axes of rotation. Y = roll, X = pitch, and Z = yaw.</b>
 </p>
 
-The onboard accelerometer and gyroscope are used to calculate the rotation of the drone along these three axes in real time. The observed rotation is fed into the control algorithm to calculate the new motor speeds necessary to correct for any unwanted rotation. The flight controller algorithm runs in a loop continously making these corrections and adjustments throughout the duration of the flight. The stability of the drone is ultimately a function of how quickly corrections are calculated and implemented by the motors. Each component on the drone plays a role in accomplishing this task.
+The onboard accelerometer and gyroscope are used to calculate the rotation of the drone along these three axes in real time. The observed rotation is fed into the flight control algorithm to calculate the new motor speeds necessary to correct for any unwanted rotation. The flight control algorithm runs in a loop continously making these corrections and adjustments throughout the duration of the flight. The stability of the drone is ultimately a function of how quickly corrections are calculated and implemented by the motors. Each component on the drone plays a role in accomplishing this task.
 
 ### Code Structure 
 The arduino runs a continuous loop with the same main functions called each time the loop executes. The diagram below shows the main loop functions in the order of their execution. This code is pulled directly from the main loop of the Osprey Flight Controller V1.0.
