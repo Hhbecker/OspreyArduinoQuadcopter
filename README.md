@@ -71,7 +71,7 @@ This error term is then passed into the PID controller. Inside the PID controlle
 <b>The structure of a PID controller showing the error term passed through the proportional, integral, and derivative paths.</b>
 </p>
 
-Because the drone is rolling to the left in our example we would expect our PID controller to reduce the power to the motors on the right and increase the power to the motors on the left. How do the proportional, integral, and derivative term each respond to the error to affect the controller output?
+Because the drone is rolling to the left in our example we would expect our PID controller to reduce the power to the motors on the right and increase the power to the motors on the left. How do the proportional, integral, and derivative terms each respond to the error to affect the controller output?
 
 #### Proportional term
 As you might expect, the proportional term grows proportionally with the size of the error term. A larger error will result in a larger absolute contribution from the proportional term to the controller output. 
