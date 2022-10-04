@@ -18,7 +18,7 @@ An Arduino based quadcopter build with personally developed flight control softw
 
 ### Why Drones?
 I see drones as the perfect engineering challenge because they require knowledge from a range of disciplines including physics, electrical engineering, computer science, and math. 
-This drone project also provided me experience developing embedded software for a real-time application, designing and constructing circuits and electrical hardware, and implementing an algorithm based on control theory mathematics. Not only are drones a great engineering challenge but they also have innumerous real world applications including in disaster relief, law enforcement, agriculture, and war. 
+This drone project has also provided me with experience 1. developing embedded software for a real-time application, 2. designing and constructing circuits and electrical hardware, and 3. implementing an algorithm based on control theory mathematics. Not only are drones a great engineering challenge but they also have innumerous real world applications including in disaster relief, law enforcement, agriculture, and war. 
 
 ### Circuit Diagram
 <p align="center">
