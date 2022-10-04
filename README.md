@@ -51,7 +51,7 @@ Control theory is a branch of applied mathematics that deals with the use of fee
 
 The method of feedback control used in the Osprey Flight Controller is known as PID Control. PID control is one of the most common control algorithms used in industry because it is simple to understand and implement yet still provides robust performance. PID algorithms consist of three basic coefficients; proportional, integral and derivative. These coefficients are scaled or "tuned" to get the optimal response. 
 
-To better understand PID control lets use the roll axis of the osprey drone as an example. As previously discussed, the flight controller calculates the drone's attitude about the roll axis and compares the current rotation to the desired rotation set by the joystick. Let's say the desired roll is zero degrees, but a gust of wind induces a roll of 30º. The error term (the difference between the current and desired rotation) is now 30º.
+To better understand PID control let's use the roll axis of the osprey drone as an example. As previously discussed, the flight controller calculates the drone's attitude about the roll axis and compares the current rotation to the desired rotation set by the joystick. Let's say the desired roll is zero degrees, but a gust of wind induces a roll of 30º. The error term (the difference between the current and desired rotation) is now 30º.
 
 <p align="center">
 <img src="/images/roll.jpg" width="300"/>
